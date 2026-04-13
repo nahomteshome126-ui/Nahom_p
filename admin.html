@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f4f4f4; }
+        .container { max-width: 1000px; margin: auto; background: white; padding: 20px; border-radius: 8px; }
+        h1 { text-align: center; }
+        #loginForm { text-align: center; margin: 20px 0; }
+        #password { padding: 8px; width: 200px; }
+        button { padding: 8px 15px; background: #00d9ff; border: none; cursor: pointer; margin: 0 5px; }
+        .tab { display: inline-block; padding: 10px 20px; cursor: pointer; background: #eee; margin-right: 5px; }
+        .tab.active { background: #00d9ff; color: white; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .error { color: red; text-align: center; }
+        .success { color: green; text-align: center; }
+        .approve-btn { background: #4caf50; color: white; border: none; padding: 5px 10px; cursor: pointer; }
+        .unapprove-btn { background: #ffaa00; color: white; border: none; padding: 5px 10px; cursor: pointer; }
+        .delete-btn { background: #ff4444; color: white; border: none; padding: 5px 10px; cursor: pointer; }
+        #messageDisplay { margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Nahom Dashboard</h1>
+        <div id="loginForm">
+            <input type="password" id="password" placeholder="Enter admin password">
+            <button onclick="login()">Login</button>
+        </div>
+        <div id="adminPanel" style="display:none;">
+            <div>
+                <span class="tab active" onclick="switchTab('messages')" id="tabMessages">Messages</span>
+                <span class="tab" onclick="switchTab('comments')" id="tabComments">Comments</span>
+            </div>
+            <div id="messageDisplay"></div>
+            <div id="messagesTable" style="display:block;">
+                <!-- Messages table (same as before) -->
+                <table id="messagesTableBody">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Message</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div id="commentsTable" style="display:none;">
+                <table id="commentsTableBody">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Comment</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPassword = '';
+        let currentTab = 'messages'; // 'messages' or 'comments'
+
+        function login() {
+            currentPassword = document.getElementById('password').value;
+            if (!currentPassword) {
+                alert('Please enter password');
+                return;
+            }
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            loadMessages(); // default tab
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            // Update active tab styling
+            document.getElementById('tabMessages').classList.remove('active');
+            document.getElementById('tabComments').classList.remove('active');
+            document.getElementById(`tab${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.add('active');
+            
+            if (tab === 'messages') {
+                document.getElementById('messagesTable').style.display = 'block';
+                document.getElementById('commentsTable').style.display = 'none';
+                loadMessages();
+            } else {
+                document.getElementById('messagesTable').style.display = 'none';
+                document.getElementById('commentsTable').style.display = 'block';
+                loadComments();
+            }
+        }
+
+        // --- Messages (same as before, but with archive toggle) ---
+        async function loadMessages() {
+            const url = `http://localhost:5000/api/messages?password=${encodeURIComponent(currentPassword)}&includeArchived=true`;
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data.success) {
+                    displayMessages(data.data);
+                } else {
+                    document.getElementById('messageDisplay').innerHTML = '<p class="error">Failed to load messages.</p>';
+                }
+            } catch (error) {
+                document.getElementById('messageDisplay').innerHTML = '<p class="error">Error fetching messages. Check backend.</p>';
+            }
+        }
+
+        function displayMessages(messages) {
+            const tbody = document.querySelector('#messagesTableBody tbody');
+            tbody.innerHTML = '';
+            if (messages.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No messages found.</td></tr>';
+                return;
+            }
+            messages.forEach(msg => {
+                const row = tbody.insertRow();
+                row.setAttribute('data-id', msg._id);
+                row.insertCell(0).textContent = new Date(msg.date).toLocaleString();
+                row.insertCell(1).textContent = msg.name;
+                row.insertCell(2).textContent = msg.email;
+                row.insertCell(3).textContent = msg.message;
+                const actionCell = row.insertCell(4);
+                const archiveBtn = document.createElement('button');
+                archiveBtn.textContent = msg.archived ? 'Unarchive' : 'Archive';
+                archiveBtn.style.background = msg.archived ? '#4caf50' : '#ffaa00';
+                archiveBtn.onclick = () => toggleArchive(msg._id);
+                actionCell.appendChild(archiveBtn);
+            });
+        }
+
+        async function toggleArchive(id) {
+            const url = `http://localhost:5000/api/messages/${id}/archive?password=${encodeURIComponent(currentPassword)}`;
+            try {
+                const response = await fetch(url, { method: 'PATCH' });
+                const data = await response.json();
+                if (data.success) {
+                    loadMessages();
+                    document.getElementById('messageDisplay').innerHTML = '<p class="success">Message updated.</p>';
+                } else {
+                    alert('Failed to update message.');
+                }
+            } catch (error) {
+                alert('Error updating message.');
+            }
+        }
+
+        // --- Comments ---
+        async function loadComments() {
+            const url = `http://localhost:5000/api/comments/all?password=${encodeURIComponent(currentPassword)}`;
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data.success) {
+                    displayComments(data.data);
+                } else {
+                    document.getElementById('messageDisplay').innerHTML = '<p class="error">Failed to load comments.</p>';
+                }
+            } catch (error) {
+                document.getElementById('messageDisplay').innerHTML = '<p class="error">Error fetching comments.</p>';
+            }
+        }
+
+        function displayComments(comments) {
+            const tbody = document.querySelector('#commentsTableBody tbody');
+            tbody.innerHTML = '';
+            if (comments.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No comments found.</td></tr>';
+                return;
+            }
+            comments.forEach(cmt => {
+                const row = tbody.insertRow();
+                row.setAttribute('data-id', cmt._id);
+                row.insertCell(0).textContent = new Date(cmt.date).toLocaleString();
+                row.insertCell(1).textContent = cmt.name;
+                row.insertCell(2).textContent = cmt.email;
+                row.insertCell(3).textContent = cmt.comment;
+                const statusCell = row.insertCell(4);
+                statusCell.textContent = cmt.approved ? 'Approved' : 'Pending';
+                statusCell.style.color = cmt.approved ? 'green' : 'orange';
+                
+                const actionsCell = row.insertCell(5);
+                // Approve/Unapprove button
+                const approveBtn = document.createElement('button');
+                approveBtn.textContent = cmt.approved ? 'Unapprove' : 'Approve';
+                approveBtn.className = cmt.approved ? 'unapprove-btn' : 'approve-btn';
+                approveBtn.onclick = () => toggleApprove(cmt._id);
+                actionsCell.appendChild(approveBtn);
+                
+                // Delete button
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.onclick = () => deleteComment(cmt._id);
+                actionsCell.appendChild(deleteBtn);
+            });
+        }
+
+        async function toggleApprove(id) {
+            const url = `http://localhost:5000/api/comments/${id}/approve?password=${encodeURIComponent(currentPassword)}`;
+            try {
+                const response = await fetch(url, { method: 'PATCH' });
+                const data = await response.json();
+                if (data.success) {
+                    loadComments();
+                    document.getElementById('messageDisplay').innerHTML = '<p class="success">Comment status updated.</p>';
+                } else {
+                    alert('Failed to update comment.');
+                }
+            } catch (error) {
+                alert('Error updating comment.');
+            }
+        }
+
+        async function deleteComment(id) {
+            if (!confirm('Delete this comment permanently?')) return;
+            const url = `http://localhost:5000/api/comments/${id}?password=${encodeURIComponent(currentPassword)}`;
+            try {
+                const response = await fetch(url, { method: 'DELETE' });
+                const data = await response.json();
+                if (data.success) {
+                    loadComments();
+                    document.getElementById('messageDisplay').innerHTML = '<p class="success">Comment deleted.</p>';
+                } else {
+                    alert('Failed to delete comment.');
+                }
+            } catch (error) {
+                alert('Error deleting comment.');
+            }
+        }
+    </script>
+</body>
+</html>

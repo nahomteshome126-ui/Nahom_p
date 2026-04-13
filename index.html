@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nahom Teshome | Data Scientist</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">Nahom Teshome</div>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <button id="darkModeToggle">🌙</button>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+    <div class="hero-container">
+        <img src="images/Nahom.png" alt="Nahom Teshome" class="profile-img">
+
+        <div class="hero-text">
+            <h1>Hello, I'm <span>Nahom Teshome</span></h1>
+            <p>Data Science Student | ML & DL Enthusiast | Web Developer</p>
+
+            <div class="hero-buttons">
+                <button onclick="scrollToSection('projects')">View My Work</button>
+
+                <a href="https://github.com/nahomteshome126-ui" target="_blank" rel="noopener noreferrer" class="social-btn github">
+                    GitHub
+                </a>
+
+                <a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener noreferrer" class="social-btn linkedin">
+                    LinkedIn
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- About -->
+    <section id="about" class="section">
+        <h2>About Me</h2>
+        <p>
+            I am a passionate Data Science student at Debre Berhan University.
+            I specialize in Machine Learning and Deep Learning models that solve real-world problems.
+            I also have strong skills in Web Development, Computer Vision, Graphics Design, and Art.
+            My goal is to become a professional Data Scientist and Data Analyst after graduation.
+        </p>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills" class="section">
+        <h2>Skills</h2>
+
+        <div class="skill">
+            <p>Machine Learning</p>
+            <div class="progress"><div class="progress-bar" data-width="95%"></div></div>
+        </div>
+
+        <div class="skill">
+            <p>Deep Learning</p>
+            <div class="progress"><div class="progress-bar" data-width="90%"></div></div>
+        </div>
+
+        <div class="skill">
+            <p>Data Analytics</p>
+            <div class="progress"><div class="progress-bar" data-width="88%"></div></div>
+        </div>
+
+        <div class="skill">
+            <p>Web Development</p>
+            <div class="progress"><div class="progress-bar" data-width="85%"></div></div>
+        </div>
+
+        <div class="skill">
+            <p>Computer Vision</p>
+            <div class="progress"><div class="progress-bar" data-width="80%"></div></div>
+        </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects" class="section">
+        <h2>Projects</h2>
+
+        <div class="project-card">
+            <h3>Water level and Energy Forecasting System to EEP Plants</h3>
+            <p>Machine learning dashboard for forecasting Ethiopian Hydro-power plant output.</p>
+            <button>View Details</button>
+        </div>
+
+        <div class="project-card">
+            <h3>Computer Vision Detection Model</h3>
+            <p>Object detection and classification using Deep Learning.</p>
+            <button>View Details</button>
+        </div>
+
+        <div class="project-card">
+            <h3>Full Stack Web Applications</h3>
+            <p>Interactive websites using modern frontend and backend tools.</p>
+            <button>View Details</button>
+        </div>
+
+    </section>
+
+   <!-- Certificates -->
+<section id="certificates" class="section">
+    <h2>Certificates & CV</h2>
+
+    <!-- Download CV -->
+    <div class="cv-container">
+        <a href="documents/CV.pdf" download class="cv-btn">
+            📄 Download My CV
+        </a>
+    </div>
+
+    <!-- Certificates Grid -->
+    <div class="cert-grid">
+
+        <div class="cert-card">
+            <h3>Data Science Professional</h3>
+            <p>Comprehensive training in Data Science fundamentals and real-world applications.</p>
+            <a href="documents/Nahom_Teshome_Data A.pdf" download class="cert-btn">
+                Download Certificate
+            </a>
+        </div>
+
+        <div class="cert-card">
+            <h3>Machine Learning Program</h3>
+            <p>Advanced ML algorithms, model building, and deployment.</p>
+            <a href="documents/ML_Certificate.pdf" download class="cert-btn">
+                Download Certificate
+            </a>
+        </div>
+
+        <div class="cert-card">
+            <h3>Deep Learning & Computer Vision</h3>
+            <p>Neural networks, CNNs, and AI-based computer vision systems.</p>
+            <a href="documents/DL_Certificate.pdf" download class="cert-btn">
+                Download Certificate
+            </a>
+        </div>
+
+    </div>
+</section>
+<section id="guestbook" class="section">
+    <h2>Comments 💬</h2>
+    <div id="commentsList"></div>
+    <h3>Leave a comment</h3>
+    <form id="commentForm">
+        <input type="text" id="commentName" placeholder="Your Name" required>
+        <input type="email" id="commentEmail" placeholder="Your Email" required>
+        <textarea id="commentText" placeholder="Your comment..." rows="4" required></textarea>
+        <button type="submit">Post Comment</button>
+    </form>
+    <div id="commentFormStatus"></div>
+</section>
+
+    <!-- Contact -->
+    <section id="contact" class="section">
+    <h2>Contact Me</h2>
+    <form id="contactForm">
+        <input type="text" id="name" placeholder="Your Name" required>
+        <input type="email" id="email" placeholder="Your Email" required>
+        <textarea id="message" placeholder="Your Message" rows="5" required></textarea>
+        <button type="submit">Send Message</button>
+    </form>
+    <div id="formStatus"></div>
+</section>
+
+    <footer>
+        <p>© 2026 Nahom Teshome | Data Scientist</p>
+    </footer>
+
+</body>
+</html>
