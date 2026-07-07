@@ -9,13 +9,26 @@ app.use(express.json());
 
 // Database connection middleware
 app.use(async (req, res, next) => {
+    // Bypassing DB check for chat route so it stays functional without database configuration
+    if (req.path === '/api/chat') {
+        return next();
+    }
+
     try {
-        await connectDB();
+        const conn = await connectDB();
+        if (!conn) {
+            return res.status(500).json({ 
+                success: false, 
+                error: 'Database configuration missing. Please configure MONGODB_URI in your Vercel Project Dashboard.' 
+            });
+        }
         next();
     } catch (err) {
         console.error('Database connection failed in serverless handler:', err);
-        // We continue request handling; routes will handle MongoDB unavailable states gracefully or return errors.
-        next();
+        return res.status(500).json({ 
+            success: false, 
+            error: 'Database connection failed. Please verify that MONGODB_URI is correct and that MongoDB Atlas allows access from all IPs (0.0.0.0/0).' 
+        });
     }
 });
 
