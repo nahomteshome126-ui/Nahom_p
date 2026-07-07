@@ -1,21 +1,22 @@
 {
-  "name": "portfolio-backend",
+  "name": "portfolio-fullstack",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Smart Personal Portfolio of Nahom Teshome",
+  "main": "server.js",
   "scripts": {
-  "start": "node server.js",
-  "test": "echo \"Error: no test specified\" && exit 1"
-},
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
+    "dev": "vite",
+    "server": "nodemon server.js",
+    "build": "vite build",
+    "start": "node server.js"
+  },
   "dependencies": {
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
-    "mongoose": "^9.3.0",
-    "nodemon": "^3.1.14"
+    "mongoose": "^9.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14",
+    "vite": "^5.0.0"
   }
 }

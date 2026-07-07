@@ -1,20 +1,11 @@
 require('dotenv').config();
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-
-console.log('🚀 Starting server...');
-
-const app = express();
-app.use(cors());
-app.use(express.json());
-
-mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log('✅ MongoDB connected'))
-    .catch(err => console.log('❌ MongoDB connection error:', err));
-
-app.use('/api/messages', require('./routes/messages'));
-app.use('/api/comments', require('./routes/comments'));
+const app = require('./api/index');
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+
+app.listen(PORT, () => {
+    console.log(`🚀 Dev server running locally on port ${PORT}`);
+    console.log(`💬 AI Chatbot endpoint: http://localhost:${PORT}/api/chat`);
+    console.log(`✉️ Messages endpoint: http://localhost:${PORT}/api/messages`);
+    console.log(`💬 Comments endpoint: http://localhost:${PORT}/api/comments`);
+});
