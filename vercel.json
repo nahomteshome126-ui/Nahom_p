@@ -1,6 +1,7 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- . ':(exclude)README.md' ':(exclude).env*'",
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/index.js" }
   ]
