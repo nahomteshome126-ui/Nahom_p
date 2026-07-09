@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const path = require('path');
 const cors = require('cors');
 const connectDB = require('../db');
 
@@ -7,10 +8,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Serve static files from dist/ directory (for production builds)
+const distPath = path.join(__dirname, '../dist');
+app.use(express.static(distPath));
+
 // Database connection middleware
 app.use(async (req, res, next) => {
     // Bypassing DB check for chat route so it stays functional without database configuration
-    if (req.path === '/api/chat') {
+    if (req.path.startsWith('/chat') || req.path === '/api/chat') {
+        console.log('⏭️  Skipping DB check for chat endpoint');
         return next();
     }
 

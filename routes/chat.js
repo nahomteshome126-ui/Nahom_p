@@ -37,13 +37,18 @@ router.post('/', async (req, res) => {
     }
 
     const apiKey = process.env.GEMINI_API_KEY;
+    console.log('API Key present:', !!apiKey);
+    console.log('API Key length:', apiKey?.length);
+    
     if (!apiKey) {
+        console.error('❌ GEMINI_API_KEY not found in environment variables');
         // Fallback demo mode if Gemini API key is not configured in Vercel
         return res.json({ 
             success: true, 
             message: "Hello! I'm Nahom's AI Assistant. [Demo Mode]: The Gemini API key is not configured. Nahom is a Data Science student specializing in Machine Learning, Deep Learning, and Web Development. How can I help you contact him?" 
         });
     }
+    console.log('✅ API Key found, proceeding with Gemini API call');
 
     try {
         const formattedContents = [];
@@ -100,6 +105,15 @@ router.post('/', async (req, res) => {
         res.json({ success: true, message: botResponse });
     } catch (error) {
         console.error('Chat error:', error);
+        
+        // Check for quota exceeded errors
+        if (error.message && error.message.includes('429')) {
+            return res.status(429).json({ 
+                success: false, 
+                error: 'Gemini API quota exceeded. Please try again in a few moments or upgrade to a paid plan at https://ai.google.dev/pricing' 
+            });
+        }
+        
         res.status(500).json({ 
             success: false, 
             error: `Failed to communicate with AI assistant: ${error.message}` 

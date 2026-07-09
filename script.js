@@ -424,8 +424,14 @@ async function sendUserMessage(text) {
             chatHistory.push({ role: 'bot', text: data.message });
         } else {
             // Show the actual error message from the backend
-            const errorMsg = data.error || 'An error occurred while communicating with the AI assistant.';
-            appendMessage('bot', `⚠️ Error: ${errorMsg}`);
+            let errorMsg = data.error || 'An error occurred while communicating with the AI assistant.';
+            // Make quota error user-friendly
+            if (errorMsg.includes('quota exceeded')) {
+                errorMsg = '⏱️ ' + errorMsg;
+            } else {
+                errorMsg = '⚠️ Error: ' + errorMsg;
+            }
+            appendMessage('bot', errorMsg);
             console.error('API Error:', data.error);
         }
     } catch (error) {
