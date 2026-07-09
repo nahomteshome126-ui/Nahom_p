@@ -423,12 +423,15 @@ async function sendUserMessage(text) {
             appendMessage('bot', data.message);
             chatHistory.push({ role: 'bot', text: data.message });
         } else {
-            appendMessage('bot', 'Sorry, I encountered an issue while communicating with Gemini.');
+            // Show the actual error message from the backend
+            const errorMsg = data.error || 'An error occurred while communicating with the AI assistant.';
+            appendMessage('bot', `⚠️ Error: ${errorMsg}`);
+            console.error('API Error:', data.error);
         }
     } catch (error) {
         if (loader) loader.remove();
         console.error('Chatbot API error:', error);
-        appendMessage('bot', "Connection failed. Please check if Nahom's backend API is online.");
+        appendMessage('bot', `Connection failed: ${error.message}`);
     }
 }
 

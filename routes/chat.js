@@ -62,6 +62,8 @@ router.post('/', async (req, res) => {
         });
 
         const apiURL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+        console.log('Sending request to Gemini API...');
+        
         const response = await fetch(apiURL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -79,15 +81,29 @@ router.post('/', async (req, res) => {
 
         if (!response.ok) {
             const errText = await response.text();
+            console.error(`Gemini API error: ${response.status}`, errText);
             throw new Error(`Gemini API error: ${response.status} - ${errText}`);
         }
 
         const data = await response.json();
-        const botResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || "I'm sorry, I couldn't generate a response.";
+        
+        if (!data.candidates || data.candidates.length === 0) {
+            console.error('No candidates in Gemini response:', data);
+            return res.json({ 
+                success: true, 
+                message: "I'm sorry, I couldn't generate a response. Please try again." 
+            });
+        }
+
+        const botResponse = data.candidates[0]?.content?.parts?.[0]?.text || "I'm sorry, I couldn't generate a response.";
+        console.log('Gemini API success');
         res.json({ success: true, message: botResponse });
     } catch (error) {
         console.error('Chat error:', error);
-        res.status(500).json({ success: false, error: 'Failed to communicate with AI assistant' });
+        res.status(500).json({ 
+            success: false, 
+            error: `Failed to communicate with AI assistant: ${error.message}` 
+        });
     }
 });
 
