@@ -1,4 +1,7 @@
 {
+  "name": "Nahom-Portfolio-Fullstack",
+  "buildCommand": "vite build",
+  "outputDirectory": "dist",
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/index.js" }
   ]
