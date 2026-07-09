@@ -1,5 +1,4 @@
 {
-  "name": "Nahom-Portfolio-Fullstack",
   "buildCommand": "vite build",
   "outputDirectory": "dist",
   "rewrites": [
