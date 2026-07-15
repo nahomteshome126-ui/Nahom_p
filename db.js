@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
-let cachedConnection = null;
+let cachedPromise = null;
 
 async function connectDB() {
-    if (cachedConnection) {
-        return cachedConnection;
+    if (mongoose.connection.readyState === 1) {
+        return mongoose.connection;
     }
 
     if (!process.env.MONGODB_URI) {
@@ -12,18 +12,22 @@ async function connectDB() {
         return null;
     }
 
-    try {
-        // Connect to MongoDB
-        const conn = await mongoose.connect(process.env.MONGODB_URI, {
+    if (!cachedPromise) {
+        console.log('🔌 Initiating new MongoDB connection...');
+        cachedPromise = mongoose.connect(process.env.MONGODB_URI, {
             bufferCommands: false,
+        }).then((m) => {
+            console.log('✅ Connected to MongoDB');
+            return m;
+        }).catch((error) => {
+            console.error('❌ MongoDB connection error:', error);
+            cachedPromise = null; // Reset cached promise on failure to allow retry
+            throw error;
         });
-        cachedConnection = conn;
-        console.log('✅ Connected to MongoDB');
-        return conn;
-    } catch (error) {
-        console.error('❌ MongoDB connection error:', error);
-        throw error;
     }
+
+    return cachedPromise;
 }
 
 module.exports = connectDB;
+
