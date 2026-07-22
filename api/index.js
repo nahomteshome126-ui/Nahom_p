@@ -41,7 +41,9 @@ app.use(async (req, res, next) => {
 // Define API routes
 app.use('/api/messages', require('../routes/messages'));
 app.use('/api/comments', require('../routes/comments'));
+app.use('/api/certificates', require('../routes/certificates'));
 app.use('/api/chat', require('../routes/chat'));
+app.use('/api/storage', require('../routes/storage'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {

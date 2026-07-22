@@ -522,3 +522,377 @@ if (projectModal) {
         }
     });
 }
+
+// ================= ADMIN MONITOR & BELL ALARM SYSTEM =================
+
+let monitorPassword = localStorage.getItem('adminPassword') || '';
+let monitorMuted = localStorage.getItem('monitorMuted') === 'true';
+let knownItemIds = new Set();
+let activeNotifications = [];
+let monitorInterval = null;
+let tabFlashInterval = null;
+let originalPageTitle = document.title;
+
+// Elements
+const navBellBtn = document.getElementById('navBellBtn');
+const bellBadge = document.getElementById('bellBadge');
+const bellDropdown = document.getElementById('bellDropdown');
+const bellDropdownList = document.getElementById('bellDropdownList');
+const adminMonitorModal = document.getElementById('adminMonitorModal');
+const clearAlertsBtn = document.getElementById('clearAlertsBtn');
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    initMonitorSystem();
+});
+
+// Setup click and window events
+function initMonitorSystem() {
+    if (!navBellBtn) return;
+
+    // Bell click handler
+    navBellBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!monitorPassword) {
+            openMonitorModal();
+        } else {
+            toggleBellDropdown();
+        }
+    });
+
+    // Close dropdown on click outside
+    document.addEventListener('click', (e) => {
+        if (bellDropdown && !bellDropdown.contains(e.target) && e.target !== navBellBtn) {
+            bellDropdown.style.display = 'none';
+        }
+    });
+
+    // Clear alerts handler
+    if (clearAlertsBtn) {
+        clearAlertsBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            clearAllAlerts();
+        });
+    }
+
+    // Auto-start monitor if password exists
+    if (monitorPassword) {
+        startAdminMonitoring();
+    }
+}
+
+function openMonitorModal() {
+    if (adminMonitorModal) {
+        adminMonitorModal.style.display = 'flex';
+        adminMonitorModal.classList.add('active');
+        document.getElementById('monitorPassword').focus();
+    }
+}
+
+function closeMonitorModal() {
+    if (adminMonitorModal) {
+        adminMonitorModal.style.display = 'none';
+        adminMonitorModal.classList.remove('active');
+        document.getElementById('monitorPassword').value = '';
+    }
+}
+
+// Attach these to window so they are globally accessible from inline HTML onclicks
+window.closeMonitorModal = closeMonitorModal;
+window.verifyMonitorPassword = verifyMonitorPassword;
+
+async function verifyMonitorPassword() {
+    const passwordInput = document.getElementById('monitorPassword');
+    const pwd = passwordInput.value.trim();
+    if (!pwd) {
+        alert('Please enter password');
+        return;
+    }
+
+    // Test password against message retrieval
+    try {
+        const response = await fetch(`/api/messages?password=${encodeURIComponent(pwd)}`);
+        const data = await response.json();
+        if (data.success) {
+            monitorPassword = pwd;
+            localStorage.setItem('adminPassword', pwd);
+            closeMonitorModal();
+            alert('🔓 Admin Monitor successfully activated!');
+            startAdminMonitoring();
+        } else {
+            alert('❌ Invalid admin password. Access denied.');
+        }
+    } catch (e) {
+        alert('🔌 Connection error. Verify the server is running.');
+    }
+}
+
+async function startAdminMonitoring() {
+    if (monitorInterval) clearInterval(monitorInterval);
+
+    // Initial fetch to load all current IDs so we don't alert on old items
+    await initializeKnownIds();
+
+    // Poll every 10 seconds
+    monitorInterval = setInterval(pollForUpdates, 10000);
+    pollForUpdates(); // run immediately
+    updateBellUI();
+}
+
+async function initializeKnownIds() {
+    try {
+        const [msgRes, cmtRes] = await Promise.all([
+            fetch(`/api/messages?password=${encodeURIComponent(monitorPassword)}&includeArchived=true`),
+            fetch(`/api/comments/all?password=${encodeURIComponent(monitorPassword)}`)
+        ]);
+        const msgData = await msgRes.json();
+        const cmtData = await cmtRes.json();
+
+        if (msgData.success) {
+            msgData.data.forEach(m => knownItemIds.add(m._id));
+        }
+        if (cmtData.success) {
+            cmtData.data.forEach(c => knownItemIds.add(c._id));
+        }
+    } catch (e) {
+        console.error('Failed to initialize known IDs:', e);
+    }
+}
+
+async function pollForUpdates() {
+    if (!monitorPassword) return;
+
+    try {
+        const [msgRes, cmtRes] = await Promise.all([
+            fetch(`/api/messages?password=${encodeURIComponent(monitorPassword)}&includeArchived=false`),
+            fetch(`/api/comments/all?password=${encodeURIComponent(monitorPassword)}`)
+        ]);
+        const msgData = await msgRes.json();
+        const cmtData = await cmtRes.json();
+
+        let hasNew = false;
+
+        // Process new messages
+        if (msgData.success) {
+            msgData.data.forEach(m => {
+                if (!knownItemIds.has(m._id)) {
+                    knownItemIds.add(m._id);
+                    // Add unread alert
+                    activeNotifications.unshift({
+                        id: m._id,
+                        type: 'message',
+                        title: `Message from ${m.name}`,
+                        detail: m.message,
+                        date: new Date(m.date),
+                        unread: true
+                    });
+                    hasNew = true;
+                }
+            });
+        }
+
+        // Process new comments
+        if (cmtData.success) {
+            cmtData.data.forEach(c => {
+                if (!knownItemIds.has(c._id)) {
+                    knownItemIds.add(c._id);
+                    activeNotifications.unshift({
+                        id: c._id,
+                        type: 'comment',
+                        title: `Comment from ${c.name}`,
+                        detail: c.comment,
+                        date: new Date(c.date),
+                        unread: true
+                    });
+                    hasNew = true;
+                }
+            });
+        }
+
+        if (hasNew) {
+            triggerAlert();
+        }
+    } catch (e) {
+        console.error('Error during monitoring poll:', e);
+    }
+}
+
+function triggerAlert() {
+    // 1. Play audio chime
+    playChimeSound();
+
+    // 2. Start title flashing
+    startTitleFlashing();
+
+    // 3. Update UI
+    updateBellUI();
+}
+
+function updateBellUI() {
+    if (!navBellBtn || !bellBadge) return;
+
+    const unreadCount = activeNotifications.filter(n => n.unread).length;
+
+    if (unreadCount > 0) {
+        navBellBtn.classList.add('active');
+        bellBadge.textContent = unreadCount;
+        bellBadge.style.display = 'flex';
+    } else {
+        navBellBtn.classList.remove('active');
+        bellBadge.style.display = 'none';
+        stopTitleFlashing();
+    }
+
+    renderDropdownList();
+}
+
+function renderDropdownList() {
+    if (!bellDropdownList) return;
+    bellDropdownList.innerHTML = '';
+
+    if (activeNotifications.length === 0) {
+        bellDropdownList.innerHTML = `<div class="bell-dropdown-empty">
+            ${monitorPassword ? 'No alerts. Monitoring active.' : 'No alerts. Click bell to unlock monitor.'}
+        </div>`;
+        return;
+    }
+
+    // Add sound status button in dropdown list
+    const soundIndicator = document.createElement('div');
+    soundIndicator.style.padding = '8px 16px';
+    soundIndicator.style.fontSize = '0.75rem';
+    soundIndicator.style.borderBottom = '1px solid var(--glass-border)';
+    soundIndicator.style.display = 'flex';
+    soundIndicator.style.justifyContent = 'space-between';
+    soundIndicator.style.alignItems = 'center';
+    soundIndicator.style.color = 'var(--text-secondary)';
+    soundIndicator.innerHTML = `
+        <span>Sound Notifications:</span>
+        <button id="bellSoundToggle" class="sound-toggle-btn" style="cursor:pointer; border:none; background:none;">
+            ${monitorMuted ? '🔇 Muted' : '🔊 Sound ON'}
+        </button>
+    `;
+    bellDropdownList.appendChild(soundIndicator);
+
+    // Bind event to sound toggle
+    setTimeout(() => {
+        const btn = document.getElementById('bellSoundToggle');
+        if (btn) {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                monitorMuted = !monitorMuted;
+                localStorage.setItem('monitorMuted', monitorMuted);
+                btn.textContent = monitorMuted ? '🔇 Muted' : '🔊 Sound ON';
+            });
+        }
+    }, 10);
+
+    activeNotifications.slice(0, 5).forEach(n => {
+        const item = document.createElement('div');
+        item.className = `bell-alert-item ${n.unread ? 'unread' : ''}`;
+        
+        const timeStr = new Date(n.date).toLocaleString(undefined, {
+            month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+        });
+
+        const shortDetail = n.detail.length > 50 ? n.detail.slice(0, 50) + '...' : n.detail;
+
+        item.innerHTML = `
+            <span class="alert-title">${escapeHtml(n.title)}</span>
+            <span class="alert-desc" style="color: var(--text-secondary); line-height: 1.3;">${escapeHtml(shortDetail)}</span>
+            <span class="alert-time">${timeStr}</span>
+        `;
+
+        item.addEventListener('click', (e) => {
+            e.stopPropagation();
+            n.unread = false;
+            updateBellUI();
+            if (n.type === 'comment') {
+                scrollToSection('guestbook');
+            } else {
+                scrollToSection('contact');
+            }
+        });
+
+        bellDropdownList.appendChild(item);
+    });
+}
+
+function toggleBellDropdown() {
+    if (!bellDropdown) return;
+    const isHidden = bellDropdown.style.display === 'none';
+    bellDropdown.style.display = isHidden ? 'flex' : 'none';
+
+    if (isHidden) {
+        activeNotifications.forEach(n => n.unread = false);
+        updateBellUI();
+    }
+}
+
+function clearAllAlerts() {
+    activeNotifications = [];
+    updateBellUI();
+    if (bellDropdown) bellDropdown.style.display = 'none';
+}
+
+function startTitleFlashing() {
+    if (tabFlashInterval) return;
+    let alternate = true;
+    tabFlashInterval = setInterval(() => {
+        document.title = alternate ? `🔔 [New Alert] Nahom.ai` : originalPageTitle;
+        alternate = !alternate;
+    }, 1000);
+}
+
+// Attach scrollToSection to window if not already
+window.scrollToSection = scrollToSection;
+
+function stopTitleFlashing() {
+    if (tabFlashInterval) {
+        clearInterval(tabFlashInterval);
+        tabFlashInterval = null;
+    }
+    document.title = originalPageTitle;
+}
+
+// Synthesize pleasant chime using Web Audio API (no assets needed)
+function playChimeSound() {
+    if (monitorMuted) return;
+
+    try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const ctx = new AudioContext();
+
+        // Tone 1
+        const osc1 = ctx.createOscillator();
+        const gain1 = ctx.createGain();
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(587.33, ctx.currentTime);
+        osc1.frequency.exponentialRampToValueAtTime(880.00, ctx.currentTime + 0.12);
+        gain1.gain.setValueAtTime(0.12, ctx.currentTime);
+        gain1.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
+        osc1.connect(gain1);
+        gain1.connect(ctx.destination);
+        osc1.start();
+        osc1.stop(ctx.currentTime + 0.5);
+
+        // Tone 2
+        setTimeout(() => {
+            const osc2 = ctx.createOscillator();
+            const gain2 = ctx.createGain();
+            osc2.type = 'sine';
+            osc2.frequency.setValueAtTime(880.00, ctx.currentTime);
+            osc2.frequency.exponentialRampToValueAtTime(1174.66, ctx.currentTime + 0.12);
+            gain2.gain.setValueAtTime(0.12, ctx.currentTime);
+            gain2.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
+            osc2.connect(gain2);
+            gain2.connect(ctx.destination);
+            osc2.start();
+            osc2.stop(ctx.currentTime + 0.5);
+        }, 120);
+
+    } catch (e) {
+        console.warn('AudioContext chime failed:', e);
+    }
+}

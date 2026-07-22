@@ -413,6 +413,8 @@
             <div class="tabs-header">
                 <button class="tab-btn active" onclick="switchTab('messages')" id="tabMessages">Messages</button>
                 <button class="tab-btn" onclick="switchTab('comments')" id="tabComments">Comments</button>
+                <button class="tab-btn" onclick="switchTab('certificates')" id="tabCertificates">Certificates</button>
+                <button class="tab-btn" onclick="switchTab('storage')" id="tabStorage">File Storage</button>
             </div>
 
             <!-- Alert banner -->
@@ -455,6 +457,83 @@
                 </div>
             </div>
 
+            <!-- Certificates Table & Add Form -->
+            <div id="certificatesTableContainer" style="display:none;">
+                <div style="background: rgba(15, 23, 42, 0.4); border: 1px solid var(--glass-border); padding: 25px; border-radius: 16px; margin-bottom: 30px;">
+                    <h3 style="font-family: 'Syne', sans-serif; margin-bottom: 20px; color: var(--accent);">🎓 Add New Certificate Listing</h3>
+                    <form id="addCertForm" onsubmit="event.preventDefault(); addCertificate();" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label for="certTitle">Certificate Title</label>
+                            <input type="text" id="certTitle" required placeholder="e.g. Google Cloud Professional">
+                        </div>
+                        <div class="form-group">
+                            <label for="certIcon">Icon (Emoji)</label>
+                            <input type="text" id="certIcon" required placeholder="e.g. 🎓 or ☁️" value="🎓">
+                        </div>
+                        <div class="form-group" style="grid-column: span 2;">
+                            <label for="certDesc">Description</label>
+                            <input type="text" id="certDesc" required placeholder="e.g. Comprehensive training in statistics, analysis, and ML implementations.">
+                        </div>
+                        <div class="form-group" style="grid-column: span 2;">
+                            <label for="certUrl">Certificate URL / Document Path</label>
+                            <input type="text" id="certUrl" required placeholder="e.g. documents/MyNewCert.pdf or https://credentials.com/xxx">
+                        </div>
+                        <button type="submit" class="btn-primary" style="grid-column: span 2; margin-top: 10px;">Add Certificate to Website</button>
+                    </form>
+                </div>
+
+                <div class="table-responsive">
+                    <table id="certificatesTable">
+                        <thead>
+                            <tr>
+                                <th>Icon</th>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Link/Path</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- File Storage Table & Upload Form -->
+            <div id="storageTableContainer" style="display:none;">
+                <div style="background: rgba(15, 23, 42, 0.4); border: 1px solid var(--glass-border); padding: 25px; border-radius: 16px; margin-bottom: 30px;">
+                    <h3 style="font-family: 'Syne', sans-serif; margin-bottom: 20px; color: var(--accent);">📁 Upload & Manage PDF/Image Documents</h3>
+                    <form id="uploadFileForm" onsubmit="event.preventDefault(); uploadFile();" style="display: flex; flex-direction: column; gap: 15px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div class="form-group">
+                                <label for="storageFile">Select File (PDF, Image, etc., max 16MB)</label>
+                                <input type="file" id="storageFile" required style="padding: 10px; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--glass-border); border-radius: 10px; color: var(--text-primary);" onchange="updateUploadName()">
+                            </div>
+                            <div class="form-group">
+                                <label for="storageFileName">Clean Destination Filename</label>
+                                <input type="text" id="storageFileName" required placeholder="e.g. CV_Nahom.pdf">
+                            </div>
+                        </div>
+                        <button type="submit" id="btnUpload" class="btn-primary" style="margin-top: 10px;">Upload File to Database</button>
+                        <div id="uploadStatus" style="font-size: 0.95rem; font-weight: 500; text-align: center; margin-top: 5px;"></div>
+                    </form>
+                </div>
+
+                <div class="table-responsive">
+                    <table id="storageTable">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Filename</th>
+                                <th>Size</th>
+                                <th>Upload Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
             <a href="/" class="nav-back">← Back to Portfolio Website</a>
         </div>
     </div>
@@ -480,19 +559,20 @@
             loadData();
         }
 
-        function switchTab(tab) {
+         function switchTab(tab) {
             currentTab = tab;
             document.getElementById('tabMessages').classList.remove('active');
             document.getElementById('tabComments').classList.remove('active');
+            document.getElementById('tabCertificates').classList.remove('active');
+            document.getElementById('tabStorage').classList.remove('active');
             document.getElementById(`tab${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.add('active');
             
-            if (tab === 'messages') {
-                document.getElementById('messagesTableContainer').style.display = 'block';
-                document.getElementById('commentsTableContainer').style.display = 'none';
-            } else {
-                document.getElementById('messagesTableContainer').style.display = 'none';
-                document.getElementById('commentsTableContainer').style.display = 'block';
-            }
+            document.getElementById('messagesTableContainer').style.display = 'none';
+            document.getElementById('commentsTableContainer').style.display = 'none';
+            document.getElementById('certificatesTableContainer').style.display = 'none';
+            document.getElementById('storageTableContainer').style.display = 'none';
+            
+            document.getElementById(`${tab}TableContainer`).style.display = 'block';
         }
 
         function showBanner(text, type = 'success') {
@@ -505,8 +585,8 @@
         }
 
         async function loadData() {
-            // Load messages and comments in parallel to calculate stats
-            await Promise.all([loadMessages(), loadComments()]);
+            // Load messages, comments, certificates, and storage in parallel to calculate stats
+            await Promise.all([loadMessages(), loadComments(), loadCertificates(), loadStorageFiles()]);
             updateStatsUI();
         }
 
@@ -674,6 +754,265 @@
                     loadData();
                 } else {
                     alert('Failed to delete comment.');
+                }
+            } catch (error) {
+                alert('Connection error.');
+            }
+        }
+
+        async function loadCertificates() {
+            const url = `/api/certificates?password=${encodeURIComponent(currentPassword)}`;
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data.success) {
+                    displayCertificates(data.data);
+                } else {
+                    showBanner('Failed to load certificates.', 'error');
+                }
+            } catch (error) {
+                showBanner('Error loading certificates.', 'error');
+            }
+        }
+
+        function displayCertificates(certs) {
+            const tbody = document.querySelector('#certificatesTable tbody');
+            tbody.innerHTML = '';
+            if (certs.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color: var(--text-secondary);">No certificates found.</td></tr>';
+                return;
+            }
+            certs.forEach(c => {
+                const row = tbody.insertRow();
+                
+                row.insertCell(0).textContent = c.icon || '🎓';
+                row.insertCell(1).textContent = c.title;
+                row.insertCell(2).textContent = c.description;
+                
+                const urlCell = row.insertCell(3);
+                const link = document.createElement('a');
+                link.href = c.downloadUrl;
+                link.target = '_blank';
+                link.style.color = 'var(--accent)';
+                link.textContent = c.downloadUrl;
+                urlCell.appendChild(link);
+                
+                const actionsCell = row.insertCell(4);
+                actionsCell.className = 'action-group';
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.className = 'action-btn delete';
+                deleteBtn.onclick = () => deleteCertificate(c._id);
+                actionsCell.appendChild(deleteBtn);
+            });
+        }
+
+        async function addCertificate() {
+            const title = document.getElementById('certTitle').value.trim();
+            const icon = document.getElementById('certIcon').value.trim();
+            const description = document.getElementById('certDesc').value.trim();
+            const downloadUrl = document.getElementById('certUrl').value.trim();
+
+            if (!title || !description || !downloadUrl) return;
+
+            const url = `/api/certificates`;
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password: currentPassword, title, icon, description, downloadUrl })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    showBanner('Certificate added successfully!');
+                    document.getElementById('addCertForm').reset();
+                    document.getElementById('certIcon').value = '🎓';
+                    loadData();
+                } else {
+                    alert(`Error: ${data.error || 'Failed to add certificate.'}`);
+                }
+            } catch (error) {
+                alert('Connection error.');
+            }
+        }
+
+        async function deleteCertificate(id) {
+            if (!confirm('Are you sure you want to permanently delete this certificate listing?')) return;
+            const url = `/api/certificates/${id}?password=${encodeURIComponent(currentPassword)}`;
+            try {
+                const response = await fetch(url, { method: 'DELETE' });
+                const data = await response.json();
+                if (data.success) {
+                    showBanner('Certificate deleted successfully.');
+                    loadData();
+                } else {
+                    alert('Failed to delete certificate.');
+                }
+            } catch (error) {
+                alert('Connection error.');
+            }
+        }
+
+        // ================= STORAGE FILE MANAGER =================
+
+        function updateUploadName() {
+            const fileInput = document.getElementById('storageFile');
+            const nameInput = document.getElementById('storageFileName');
+            if (fileInput.files.length > 0) {
+                const rawName = fileInput.files[0].name;
+                nameInput.value = rawName.replace(/[^a-zA-Z0-9.\-_]/g, '_');
+            }
+        }
+
+        async function loadStorageFiles() {
+            if (!currentPassword) return;
+            const url = `/api/storage?password=${encodeURIComponent(currentPassword)}`;
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data.success) {
+                    displayStorageFiles(data.data);
+                } else {
+                    showBanner('Failed to load stored files.', 'error');
+                }
+            } catch (error) {
+                showBanner('Error loading stored files. Server is offline.', 'error');
+            }
+        }
+
+        function displayStorageFiles(files) {
+            const tbody = document.querySelector('#storageTable tbody');
+            tbody.innerHTML = '';
+            if (files.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color: var(--text-secondary);">No files uploaded yet.</td></tr>';
+                return;
+            }
+            files.forEach(file => {
+                const row = tbody.insertRow();
+                
+                let emoji = '📄';
+                if (/pdf/i.test(file.contentType)) emoji = '📕';
+                else if (/image/i.test(file.contentType)) emoji = '🖼️';
+                else if (/word|document/i.test(file.contentType)) emoji = '📝';
+                
+                row.insertCell(0).textContent = emoji;
+                row.insertCell(1).textContent = file.filename;
+                
+                const sizeKB = (file.size / 1024).toFixed(1);
+                row.insertCell(2).textContent = sizeKB > 1024 ? `${(sizeKB / 1024).toFixed(2)} MB` : `${sizeKB} KB`;
+                
+                const date = new Date(file.uploadDate).toLocaleString(undefined, { 
+                    month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' 
+                });
+                row.insertCell(3).textContent = date;
+                
+                const actionsCell = row.insertCell(4);
+                actionsCell.className = 'action-group';
+                
+                const copyBtn = document.createElement('button');
+                copyBtn.textContent = 'Copy URL';
+                copyBtn.className = 'action-btn archive';
+                copyBtn.onclick = () => {
+                    const relativeUrl = `/api/storage/raw/${file.filename}`;
+                    const absoluteUrl = window.location.origin + relativeUrl;
+                    navigator.clipboard.writeText(absoluteUrl).then(() => {
+                        alert('Copied absolute URL to clipboard:\n' + absoluteUrl);
+                    }).catch(err => {
+                        prompt('Copy this link:', absoluteUrl);
+                    });
+                };
+                actionsCell.appendChild(copyBtn);
+
+                const viewBtn = document.createElement('button');
+                viewBtn.textContent = 'View';
+                viewBtn.className = 'action-btn unarchive';
+                viewBtn.onclick = () => {
+                    window.open(`/api/storage/raw/${file.filename}`, '_blank');
+                };
+                actionsCell.appendChild(viewBtn);
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.className = 'action-btn delete';
+                deleteBtn.onclick = () => deleteStorageFile(file._id, file.filename);
+                actionsCell.appendChild(deleteBtn);
+            });
+        }
+
+        async function uploadFile() {
+            const fileInput = document.getElementById('storageFile');
+            const nameInput = document.getElementById('storageFileName');
+            const statusDiv = document.getElementById('uploadStatus');
+            const btnUpload = document.getElementById('btnUpload');
+
+            if (fileInput.files.length === 0) return;
+            const file = fileInput.files[0];
+            const filename = nameInput.value.trim();
+
+            if (!filename) {
+                alert('Please provide a clean filename.');
+                return;
+            }
+
+            if (file.size > 16 * 1024 * 1024) {
+                alert('File is too large. Maximum size is 16MB.');
+                return;
+            }
+
+            btnUpload.disabled = true;
+            btnUpload.textContent = 'Uploading to MongoDB...';
+            statusDiv.style.color = 'var(--text-secondary)';
+            statusDiv.textContent = 'Reading file content...';
+
+            const reader = new FileReader();
+            reader.onload = async function () {
+                const base64Data = reader.result.split(',')[1];
+                statusDiv.textContent = 'Saving file to database...';
+
+                try {
+                    const response = await fetch('/api/storage', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            password: currentPassword,
+                            filename,
+                            contentType: file.type || 'application/octet-stream',
+                            data: base64Data
+                        })
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                        statusDiv.style.color = 'var(--success)';
+                        statusDiv.textContent = '✅ File uploaded successfully!';
+                        document.getElementById('uploadFileForm').reset();
+                        loadData();
+                    } else {
+                        statusDiv.style.color = 'var(--danger)';
+                        statusDiv.textContent = `❌ Upload failed: ${data.error || 'Unknown error'}`;
+                    }
+                } catch (error) {
+                    statusDiv.style.color = 'var(--danger)';
+                    statusDiv.textContent = '❌ Connection error during upload.';
+                } finally {
+                    btnUpload.disabled = false;
+                    btnUpload.textContent = 'Upload File to Database';
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function deleteStorageFile(id, filename) {
+            if (!confirm(`Are you sure you want to permanently delete '${filename}'?`)) return;
+            const url = `/api/storage/${id}?password=${encodeURIComponent(currentPassword)}`;
+            try {
+                const response = await fetch(url, { method: 'DELETE' });
+                const data = await response.json();
+                if (data.success) {
+                    showBanner(`File '${filename}' deleted successfully.`);
+                    loadData();
+                } else {
+                    alert('Failed to delete file.');
                 }
             } catch (error) {
                 alert('Connection error.');

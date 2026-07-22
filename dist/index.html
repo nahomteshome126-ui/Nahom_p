@@ -10,8 +10,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
-  <script type="module" crossorigin src="/assets/main-Q5AtgcWS.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/main-yPVSImlt.css">
+  <script type="module" crossorigin src="/assets/main-Bbl1bCW9.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/main-B_3GDJvk.css">
 </head>
 <body>
 
@@ -28,6 +28,30 @@
             <li><a href="#contact">Contact</a></li>
         </ul>
         <div class="nav-actions">
+            <!-- Notification Bell Wrapper -->
+            <div class="nav-bell-wrapper" id="navBellWrapper" style="position: relative;">
+                <button id="navBellBtn" class="nav-bell-btn" aria-label="Notifications" title="Admin Alerts">
+                    <svg class="bell-icon" viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                    <span class="bell-badge" id="bellBadge" style="display: none;">0</span>
+                </button>
+                
+                <!-- Notification Dropdown Panel -->
+                <div class="bell-dropdown" id="bellDropdown" style="display: none;">
+                    <div class="bell-dropdown-header">
+                        <h4>Admin Alerts</h4>
+                        <button id="clearAlertsBtn" class="clear-alerts-btn">Clear All</button>
+                    </div>
+                    <div class="bell-dropdown-list" id="bellDropdownList">
+                        <div class="bell-dropdown-empty">No alerts. Click bell to unlock monitor.</div>
+                    </div>
+                    <div class="bell-dropdown-footer">
+                        <a href="/admin.html">Go to Admin Dashboard →</a>
+                    </div>
+                </div>
+            </div>
             <button id="darkModeToggle" class="theme-toggle" aria-label="Toggle Theme">🌙</button>
             <button class="mobile-menu-btn" aria-label="Toggle Menu">
                 <span class="bar"></span>
@@ -409,6 +433,22 @@
         <div class="modal-content">
             <button class="modal-close" onclick="closeProjectModal()">&times;</button>
             <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Admin Unlock Monitor Modal -->
+    <div id="adminMonitorModal" class="modal hidden" style="display: none; z-index: 10000; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); align-items: center; justify-content: center;">
+        <div class="modal-content" style="max-width: 400px; padding: 30px; text-align: center; background: rgba(30, 41, 59, 0.95); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <h3 style="font-family: 'Syne', sans-serif; margin-bottom: 15px; color: var(--accent);">🔑 Activate Admin Monitor</h3>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5;">Enter your admin password to activate real-time email alerts and notification bells on this page.</p>
+            <div class="form-group" style="margin-bottom: 20px; display: flex; flex-direction: column; text-align: left; gap: 8px;">
+                <label for="monitorPassword" style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">Admin Password</label>
+                <input type="password" id="monitorPassword" placeholder="Enter admin password..." style="width: 100%; padding: 12px; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--glass-border); border-radius: 10px; color: #fff; outline: none;">
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="closeMonitorModal()" class="btn-primary" style="background: #475569; box-shadow: none; padding: 10px; flex: 1;">Cancel</button>
+                <button onclick="verifyMonitorPassword()" class="btn-primary" style="padding: 10px; flex: 1;">Unlock</button>
+            </div>
         </div>
     </div>
 
