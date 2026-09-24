@@ -1827,7 +1827,7 @@ body::before {
     font-weight: 800;
     line-height: 1.25;
     margin-bottom: 20px;
-    color: #ffffff;
+    color: var(--text-primary);
 }
 
 .hero-pari-left .highlight-name {
@@ -1838,6 +1838,14 @@ body::before {
 .hero-pari-left .highlight-role {
     color: #10b981;
     font-weight: 800;
+}
+
+.hero-pari-desc {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    margin-top: 15px;
+    max-width: 540px;
+    line-height: 1.7;
 }
 
 .hero-social-row {
@@ -1852,11 +1860,11 @@ body::before {
     height: 42px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--glass-border);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #94a3b8;
+    color: var(--text-secondary);
     text-decoration: none;
     font-size: 1.2rem;
     transition: all 0.3s ease;
@@ -1877,7 +1885,58 @@ body::before {
     flex-wrap: wrap;
 }
 
-/* Skills pari style */
+/* About Me Pari Grid Layout */
+.about-pari-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 45px;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.about-photo-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 2px solid rgba(139, 92, 246, 0.4);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    background: var(--bg-secondary);
+}
+
+.about-photo-img {
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.about-photo-wrapper:hover .about-photo-img {
+    transform: scale(1.05);
+}
+
+.about-photo-badge {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    right: 15px;
+    background: rgba(13, 15, 31, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(139, 92, 246, 0.4);
+    padding: 10px 16px;
+    border-radius: 12px;
+    color: #ffffff;
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* Skills pari style (Right to Left Auto Marquee) */
 .section-title-badge-container {
     display: flex;
     align-items: center;
@@ -1900,30 +1959,48 @@ body::before {
 .section-title-badge {
     position: relative;
     z-index: 2;
-    background: #121428;
+    background: var(--bg-secondary);
     border: 1px solid rgba(139, 92, 246, 0.4);
     padding: 10px 32px;
     border-radius: 8px;
-    color: #ffffff;
+    color: var(--text-primary);
     font-family: 'Syne', sans-serif;
     font-size: 1.3rem;
     font-weight: 700;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
-.developer-skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+.skills-marquee-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    padding: 15px 0;
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.skills-marquee-track {
+    display: flex;
     gap: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
+    width: max-content;
+    animation: scrollMarqueeLeft 30s linear infinite;
+}
+
+.skills-marquee-wrapper:hover .skills-marquee-track {
+    animation-play-state: paused;
+}
+
+@keyframes scrollMarqueeLeft {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
 }
 
 .developer-skill-card {
-    background: #0d0f22;
-    border: 1px solid rgba(139, 92, 246, 0.2);
-    border-radius: 12px;
-    padding: 24px 16px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 20px 24px;
+    min-width: 140px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1931,22 +2008,34 @@ body::before {
     gap: 12px;
     transition: all 0.3s ease;
     cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 .developer-skill-card:hover {
     border-color: #ec4899;
     transform: translateY(-5px);
     box-shadow: 0 10px 30px rgba(236, 72, 153, 0.25);
-    background: #141733;
 }
 
-.developer-skill-icon {
-    font-size: 2.2rem;
+.developer-skill-svg {
+    width: 44px;
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 50px;
-    height: 50px;
+}
+
+.developer-skill-svg svg {
+    width: 100%;
+    height: 100%;
+}
+
+.developer-skill-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-align: center;
+    white-space: nowrap;
 }
 
 .developer-skill-name {
@@ -1956,22 +2045,30 @@ body::before {
     text-align: center;
 }
 
-/* Projects pari style */
+/* Projects pari style (Sticky Card Overlapping Stacking) */
 .projects-stacked-container {
     display: flex;
     flex-direction: column;
-    gap: 35px;
+    gap: 30px;
     max-width: 1000px;
     margin: 0 auto;
+    position: relative;
+    padding-bottom: 60px;
 }
 
 .project-code-card {
+    position: sticky;
+    top: 100px;
     background: #090a15;
     border: 1px solid rgba(139, 92, 246, 0.3);
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
-    transition: all 0.3s ease;
+    box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.6), 0 20px 50px rgba(0, 0, 0, 0.7);
+    transition: transform 0.3s ease;
+}
+
+.scroll-indicator, .floating-back-to-top {
+    display: none !important;
 }
 
 .project-code-card:hover {

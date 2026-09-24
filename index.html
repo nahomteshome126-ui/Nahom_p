@@ -66,7 +66,6 @@
     <!-- Main Content -->
     <main>
         <!-- Hero Section -->
-        <!-- Hero Section -->
         <section id="home" class="hero" style="padding-top: 120px;">
             <canvas id="hero-canvas" class="hero-canvas"></canvas>
             <div class="hero-pari-container" style="position: relative; z-index: 2;">
@@ -75,7 +74,7 @@
                         Hello,<br>
                         This is <span class="highlight-name">NAHOM TESHOME</span> , I'm a Professional <span class="highlight-role">Data Scientist &amp; Software Developer</span>.
                     </h1>
-                    <p style="color: #94a3b8; font-size: 1.05rem; margin-top: 15px; max-width: 540px; line-height: 1.7;">
+                    <p class="hero-pari-desc">
                         Building intelligent data systems, machine learning architectures, and scalable full-stack web applications. 
                         Driven by analytical rigor, deep learning, and clean code aesthetics.
                     </p>
@@ -128,21 +127,15 @@
                     </div>
                 </div>
             </div>
-            <div class="scroll-indicator" onclick="scrollToSection('about')" style="position: relative; z-index: 2; margin-top: 30px;">
-                <span class="mouse">
-                    <span class="wheel"></span>
-                </span>
-                <span class="arrow">↓</span>
-            </div>
         </section>
 
-        <!-- About Me -->
+        <!-- About Me Section with Photo on Right -->
         <section id="about" class="section">
             <div class="section-header">
                 <h2>About Me</h2>
                 <div class="divider"></div>
             </div>
-            <div class="about-container">
+            <div class="about-pari-grid">
                 <div class="about-card">
                     <p>
                         I am a highly driven <strong>Data Science Student</strong> at <strong>Debre Berhan University</strong>. 
@@ -169,79 +162,165 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="about-photo-wrapper">
+                    <img src="images/Nahom.png" alt="Nahom Teshome" class="about-photo-img">
+                    <div class="about-photo-badge">
+                        🎓 Debre Berhan University | Data Scientist
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- Skills -->
+        <!-- Skills Auto-Scrolling Marquee (Right to Left) -->
         <section id="skills" class="section bg-alt">
             <div class="section-title-badge-container">
                 <div class="section-title-badge">Skills</div>
             </div>
 
-            <div class="developer-skills-grid">
-                <div class="developer-skill-card">
-                    <div class="developer-skill-icon">🐍</div>
-                    <span class="developer-skill-name">Python</span>
-                </div>
-                <div class="developer-skill-card">
-                    <div class="developer-skill-icon">📊</div>
-                    <span class="developer-skill-name">Power BI</span>
-                </div>
-                <div class="developer-skill-card">
-                    <div class="developer-skill-icon">🐘</div>
-                    <span class="developer-skill-name">PostgreSQL</span>
-                </div>
-                <div class="developer-skill-card">
-                    <div class="developer-skill-icon">⚡</div>
-                    <span class="developer-skill-name">C++</span>
-                </div>
-                <div class="developer-skill-card">
-                    <div class="developer-skill-icon">📈</div>
-                    <span class="developer-skill-name">R</span>
-                </div>
-                <div class="developer-skill-card">
-                    <div class="developer-skill-icon">🗄️</div>
-                    <span class="developer-skill-name">SQL</span>
-                </div>
-                <div class="developer-skill-card">
-                    <div class="developer-skill-icon">🤖</div>
-                    <span class="developer-skill-name">Machine Learning</span>
-                </div>
-                <div class="developer-skill-card">
-                    <div class="developer-skill-icon">🧠</div>
-                    <span class="developer-skill-name">Deep Learning</span>
-                </div>
-                <div class="developer-skill-card">
-                    <div class="developer-skill-icon">🔥</div>
-                    <span class="developer-skill-name">PyTorch</span>
-                </div>
-                <div class="developer-skill-card">
-                    <div class="developer-skill-icon">🟧</div>
-                    <span class="developer-skill-name">TensorFlow</span>
-                </div>
-                <div class="developer-skill-card">
-                    <div class="developer-skill-icon">👁️</div>
-                    <span class="developer-skill-name">Computer Vision</span>
-                </div>
-                <div class="developer-skill-card">
-                    <div class="developer-skill-icon">🐼</div>
-                    <span class="developer-skill-name">Pandas</span>
-                </div>
-                <div class="developer-skill-card">
-                    <div class="developer-skill-icon">🌐</div>
-                    <span class="developer-skill-name">JavaScript</span>
-                </div>
-                <div class="developer-skill-card">
-                    <div class="developer-skill-icon">⚛️</div>
-                    <span class="developer-skill-name">React</span>
-                </div>
-                <div class="developer-skill-card">
-                    <div class="developer-skill-icon">🟢</div>
-                    <span class="developer-skill-name">Node.js</span>
-                </div>
-                <div class="developer-skill-card">
-                    <div class="developer-skill-icon">🍃</div>
-                    <span class="developer-skill-name">MongoDB</span>
+            <div class="skills-marquee-wrapper">
+                <div class="skills-marquee-track">
+                    <!-- Set 1 -->
+                    <div class="developer-skill-card">
+                        <div class="developer-skill-svg">
+                            <svg viewBox="0 0 128 128"><path fill="#3776AB" d="M63.7 3.5c-30.8 0-28.9 13.4-28.9 13.4l.1 13.9h29.4v4.2H23.5S3.5 32.8 3.5 63.7c0 30.8 17.5 29.8 17.5 29.8h10.4v-14.7s-.6-17.5 17.2-17.5h29.5v-27s2.5-30.8-34.4-30.8zm-15.8 9.3c2.7 0 4.8 2.2 4.8 4.8s-2.2 4.8-4.8 4.8-4.8-2.2-4.8-4.8 2.1-4.8 4.8-4.8z"/><path fill="#FFD43B" d="M64.3 124.5c30.8 0 28.9-13.4 28.9-13.4l-.1-13.9H63.7v-4.2h40.8s20.1 2.2 20.1-28.7c0-30.8-17.5-29.8-17.5-29.8h-10.4v14.7s.6 17.5-17.2 17.5H50.4v27s-2.5 30.8 34.4 30.8zm15.8-9.3c-2.7 0-4.8-2.2-4.8-4.8s2.2-4.8 4.8-4.8 4.8 2.2 4.8 4.8-2.1 4.8-4.8 4.8z"/></svg>
+                        </div>
+                        <span class="developer-skill-name">Python</span>
+                    </div>
+
+                    <div class="developer-skill-card">
+                        <div class="developer-skill-svg">
+                            <svg viewBox="0 0 128 128"><path fill="#F2C811" d="M96 16H32A16 16 0 0016 32v64a16 16 0 0016 16h64a16 16 0 0016-16V32a16 16 0 00-16-16zm-48 76H36V60h12v32zm20 0H56V44h12v48zm20 0H76V32h12v60z"/></svg>
+                        </div>
+                        <span class="developer-skill-name">Power BI</span>
+                    </div>
+
+                    <div class="developer-skill-card">
+                        <div class="developer-skill-svg">
+                            <svg viewBox="0 0 128 128"><path fill="#336791" d="M63.8 14.1c-22.1 0-38.2 14.7-38.2 36.3 0 26.5 22.8 37.8 38.2 63.5 15.4-25.7 38.2-37 38.2-63.5 0-21.6-16.1-36.3-38.2-36.3zm0 50.8c-8.7 0-15.8-7.1-15.8-15.8s7.1-15.8 15.8-15.8 15.8 7.1 15.8 15.8-7.1 15.8-15.8 15.8z"/></svg>
+                        </div>
+                        <span class="developer-skill-name">PostgreSQL</span>
+                    </div>
+
+                    <div class="developer-skill-card">
+                        <div class="developer-skill-svg">
+                            <svg viewBox="0 0 128 128"><path fill="#00599C" d="M117.5 64L64 117.5 10.5 64 64 10.5 117.5 64z"/><path fill="#FFF" d="M47 52h8v7h-8v7h-7v-7h-8v-7h8v-8h7v8zm36 0h8v7h-8v7h-7v-7h-8v-7h8v-8h7v8z"/></svg>
+                        </div>
+                        <span class="developer-skill-name">C++</span>
+                    </div>
+
+                    <div class="developer-skill-card">
+                        <div class="developer-skill-svg">
+                            <svg viewBox="0 0 128 128"><path fill="#276DC3" d="M64 16C37.5 16 16 37.5 16 64s21.5 48 48 48 48-21.5 48-48S90.5 16 64 16zm18 69H68L56 68H48v17H36V43h28c11 0 18 6 18 16 0 8-5 13-11 15l11 11z"/></svg>
+                        </div>
+                        <span class="developer-skill-name">R</span>
+                    </div>
+
+                    <div class="developer-skill-card">
+                        <div class="developer-skill-svg">
+                            <svg viewBox="0 0 128 128"><ellipse fill="#00758F" cx="64" cy="32" rx="44" ry="16"/><path fill="#00758F" d="M20 32v64c0 8.8 19.7 16 44 16s44-7.2 44-16V32H20zm44 48c-24.3 0-44-7.2-44-16V48c0 8.8 19.7 16 44 16s44-7.2 44-16v16c0 8.8-19.7 16-44 16z"/></svg>
+                        </div>
+                        <span class="developer-skill-name">SQL</span>
+                    </div>
+
+                    <div class="developer-skill-card">
+                        <div class="developer-skill-svg">
+                            <svg viewBox="0 0 128 128"><circle cx="64" cy="28" r="12" fill="#10B981"/><circle cx="32" cy="84" r="12" fill="#10B981"/><circle cx="96" cy="84" r="12" fill="#10B981"/><path stroke="#10B981" stroke-width="6" d="M64 28L32 84M64 28l32 56M32 84h64"/></svg>
+                        </div>
+                        <span class="developer-skill-name">Machine Learning</span>
+                    </div>
+
+                    <div class="developer-skill-card">
+                        <div class="developer-skill-svg">
+                            <svg viewBox="0 0 128 128"><path fill="#EC4899" d="M64 16a48 48 0 100 96 48 48 0 000-96zm0 16a32 32 0 110 64 32 32 0 010-64z"/><circle cx="64" cy="64" r="16" fill="#8B5CF6"/></svg>
+                        </div>
+                        <span class="developer-skill-name">Deep Learning</span>
+                    </div>
+
+                    <div class="developer-skill-card">
+                        <div class="developer-skill-svg">
+                            <svg viewBox="0 0 128 128"><path fill="#EE4C2C" d="M86 44L64 16 42 44l22 28L86 44zM42 84l22 28 22-28-22-28-22 28z"/></svg>
+                        </div>
+                        <span class="developer-skill-name">PyTorch</span>
+                    </div>
+
+                    <div class="developer-skill-card">
+                        <div class="developer-skill-svg">
+                            <svg viewBox="0 0 128 128"><path fill="#FF6F00" d="M64 16L24 39v50l40 23 40-23V39L64 16zm0 16l24 14v28L64 88 40 74V46l24-14z"/></svg>
+                        </div>
+                        <span class="developer-skill-name">TensorFlow</span>
+                    </div>
+
+                    <div class="developer-skill-card">
+                        <div class="developer-skill-svg">
+                            <svg viewBox="0 0 128 128"><path fill="#38BDF8" d="M64 32C36 32 16 64 16 64s20 32 48 32 48-32 48-32-20-32-48-32zm0 48a16 16 0 110-32 16 16 0 010 32z"/></svg>
+                        </div>
+                        <span class="developer-skill-name">Computer Vision</span>
+                    </div>
+
+                    <div class="developer-skill-card">
+                        <div class="developer-skill-svg">
+                            <svg viewBox="0 0 128 128"><path fill="#150458" d="M32 32h64v64H32z"/><circle cx="48" cy="48" r="8" fill="#E70488"/><circle cx="80" cy="80" r="8" fill="#E70488"/></svg>
+                        </div>
+                        <span class="developer-skill-name">Pandas</span>
+                    </div>
+
+                    <div class="developer-skill-card">
+                        <div class="developer-skill-svg">
+                            <svg viewBox="0 0 128 128"><rect width="96" height="96" x="16" y="16" fill="#F7DF1E" rx="12"/><path d="M67.8 84c1.8 3 4.2 5 8.7 5 3.7 0 6.1-1.8 6.1-4.4 0-3-2.4-4.2-6.5-6l-2.2-1c-6.4-2.7-10.7-6-10.7-13 0-6.5 5-11.4 12.8-11.4 5.6 0 9.7 2 12.3 6.6l-5.6 3.6c-1.4-2.4-3.1-3.6-6.7-3.6-3 0-5.2 1.8-5.2 3.9 0 2.7 1.8 3.8 5.7 5.4l2.2 1c7.4 3.2 11.7 6.4 11.7 13.5 0 7.8-6 12.1-14.3 12.1-8 0-12.8-3.9-15.1-8.7l5.9-3.7zM43.6 84c1.8 3 4.2 5 8.7 5 3.7 0 6.1-1.8 6.1-4.4 0-3-2.4-4.2-6.5-6l-2.2-1c-6.4-2.7-10.7-6-10.7-13 0-6.5 5-11.4 12.8-11.4 5.6 0 9.7 2 12.3 6.6l-5.6 3.6c-1.4-2.4-3.1-3.6-6.7-3.6-3 0-5.2 1.8-5.2 3.9 0 2.7 1.8 3.8 5.7 5.4l2.2 1c7.4 3.2 11.7 6.4 11.7 13.5 0 7.8-6 12.1-14.3 12.1-8 0-12.8-3.9-15.1-8.7l5.9-3.7z" fill="#000"/></svg>
+                        </div>
+                        <span class="developer-skill-name">JavaScript</span>
+                    </div>
+
+                    <div class="developer-skill-card">
+                        <div class="developer-skill-svg">
+                            <svg viewBox="0 0 128 128"><ellipse cx="64" cy="64" rx="48" ry="18" fill="none" stroke="#61DAFB" stroke-width="6" transform="rotate(30 64 64)"/><ellipse cx="64" cy="64" rx="48" ry="18" fill="none" stroke="#61DAFB" stroke-width="6" transform="rotate(90 64 64)"/><ellipse cx="64" cy="64" rx="48" ry="18" fill="none" stroke="#61DAFB" stroke-width="6" transform="rotate(150 64 64)"/><circle cx="64" cy="64" r="8" fill="#61DAFB"/></svg>
+                        </div>
+                        <span class="developer-skill-name">React</span>
+                    </div>
+
+                    <div class="developer-skill-card">
+                        <div class="developer-skill-svg">
+                            <svg viewBox="0 0 128 128"><path fill="#5FA04E" d="M64 16L20 41.5v51L64 118l44-25.5v-51L64 16zm0 18l28 16.2v32.4L64 98.8 36 82.6V50.2L64 34z"/></svg>
+                        </div>
+                        <span class="developer-skill-name">Node.js</span>
+                    </div>
+
+                    <div class="developer-skill-card">
+                        <div class="developer-skill-svg">
+                            <svg viewBox="0 0 128 128"><path fill="#47A248" d="M64 16c0 0-32 36-32 64a32 32 0 0064 0c0-28-32-64-32-64zm0 88a24 24 0 01-24-24c0-16 16-38 24-48 8 10 24 32 24 48a24 24 0 01-24 24z"/></svg>
+                        </div>
+                        <span class="developer-skill-name">MongoDB</span>
+                    </div>
+
+                    <!-- Duplicate Set 2 for Seamless Loop -->
+                    <div class="developer-skill-card">
+                        <div class="developer-skill-svg">
+                            <svg viewBox="0 0 128 128"><path fill="#3776AB" d="M63.7 3.5c-30.8 0-28.9 13.4-28.9 13.4l.1 13.9h29.4v4.2H23.5S3.5 32.8 3.5 63.7c0 30.8 17.5 29.8 17.5 29.8h10.4v-14.7s-.6-17.5 17.2-17.5h29.5v-27s2.5-30.8-34.4-30.8zm-15.8 9.3c2.7 0 4.8 2.2 4.8 4.8s-2.2 4.8-4.8 4.8-4.8-2.2-4.8-4.8 2.1-4.8 4.8-4.8z"/><path fill="#FFD43B" d="M64.3 124.5c30.8 0 28.9-13.4 28.9-13.4l-.1-13.9H63.7v-4.2h40.8s20.1 2.2 20.1-28.7c0-30.8-17.5-29.8-17.5-29.8h-10.4v14.7s.6 17.5-17.2 17.5H50.4v27s-2.5 30.8 34.4 30.8zm15.8-9.3c-2.7 0-4.8-2.2-4.8-4.8s2.2-4.8 4.8-4.8 4.8 2.2 4.8 4.8-2.1 4.8-4.8 4.8z"/></svg>
+                        </div>
+                        <span class="developer-skill-name">Python</span>
+                    </div>
+
+                    <div class="developer-skill-card">
+                        <div class="developer-skill-svg">
+                            <svg viewBox="0 0 128 128"><path fill="#F2C811" d="M96 16H32A16 16 0 0016 32v64a16 16 0 0016 16h64a16 16 0 0016-16V32a16 16 0 00-16-16zm-48 76H36V60h12v32zm20 0H56V44h12v48zm20 0H76V32h12v60z"/></svg>
+                        </div>
+                        <span class="developer-skill-name">Power BI</span>
+                    </div>
+
+                    <div class="developer-skill-card">
+                        <div class="developer-skill-svg">
+                            <svg viewBox="0 0 128 128"><path fill="#336791" d="M63.8 14.1c-22.1 0-38.2 14.7-38.2 36.3 0 26.5 22.8 37.8 38.2 63.5 15.4-25.7 38.2-37 38.2-63.5 0-21.6-16.1-36.3-38.2-36.3zm0 50.8c-8.7 0-15.8-7.1-15.8-15.8s7.1-15.8 15.8-15.8 15.8 7.1 15.8 15.8-7.1 15.8-15.8 15.8z"/></svg>
+                        </div>
+                        <span class="developer-skill-name">PostgreSQL</span>
+                    </div>
+
+                    <div class="developer-skill-card">
+                        <div class="developer-skill-svg">
+                            <svg viewBox="0 0 128 128"><path fill="#00599C" d="M117.5 64L64 117.5 10.5 64 64 10.5 117.5 64z"/><path fill="#FFF" d="M47 52h8v7h-8v7h-7v-7h-8v-7h8v-8h7v8zm36 0h8v7h-8v7h-7v-7h-8v-7h8v-8h7v8z"/></svg>
+                        </div>
+                        <span class="developer-skill-name">C++</span>
+                    </div>
                 </div>
             </div>
         </section>
@@ -254,7 +333,7 @@
 
             <div class="projects-stacked-container">
                 <!-- Project Card 1: EEP Hydropower Forecasting -->
-                <div class="project-code-card">
+                <div class="project-code-card" style="top: 100px; z-index: 1;">
                     <div class="project-code-header">
                         <div class="window-dots">
                             <span class="dot dot-red"></span>
@@ -275,7 +354,7 @@
                 </div>
 
                 <!-- Project Card 2: Computer Vision Model -->
-                <div class="project-code-card">
+                <div class="project-code-card" style="top: 130px; z-index: 2;">
                     <div class="project-code-header">
                         <div class="window-dots">
                             <span class="dot dot-red"></span>
@@ -296,7 +375,7 @@
                 </div>
 
                 <!-- Project Card 3: Intelligent Web Applications -->
-                <div class="project-code-card">
+                <div class="project-code-card" style="top: 160px; z-index: 3;">
                     <div class="project-code-header">
                         <div class="window-dots">
                             <span class="dot dot-red"></span>
@@ -317,7 +396,7 @@
                 </div>
 
                 <!-- Project Card 4: Data Analytics & Sentiment -->
-                <div class="project-code-card">
+                <div class="project-code-card" style="top: 190px; z-index: 4;">
                     <div class="project-code-header">
                         <div class="window-dots">
                             <span class="dot dot-red"></span>
