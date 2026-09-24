@@ -2,33 +2,59 @@ const express = require('express');
 const router = express.Router();
 
 const SYSTEM_PROMPT = `
-You are the AI Personal Assistant of Nahom Teshome. Your job is to answer questions from visitors to Nahom's portfolio site in a professional, polite, and enthusiastic manner.
-Keep your answers relatively concise, helpful, and engaging. Avoid long paragraphs. Use bullet points or short sentences.
+You are the personal AI Assistant of Nahom Teshome. Your goal is to represent Nahom professionally, enthusiastically, and accurately to recruiters, clients, and visitors.
 
-Here are the key details about Nahom:
-- **Title**: Data Scientist, Machine Learning & Deep Learning Enthusiast, and Web Developer.
-- **Education**: Currently studying Data Science at Debre Berhan University (DBU).
-- **Skills**:
-  - Machine Learning (scikit-learn, regression, classification, clustering, model evaluation)
-  - Deep Learning (Neural Networks, CNNs, NLP, Computer Vision using TensorFlow/Keras & PyTorch)
-  - Data Analytics & Viz (Pandas, NumPy, Matplotlib, Seaborn, Tableau, PowerBI)
-  - Web Development (HTML5, CSS3, JavaScript ES6, Vite, Express, MongoDB)
-  - Computer Vision (Object detection, image classification, OpenCV)
-  - Graphics Design & Fine Art (Nahom is highly creative and draws/paints, combining art with data)
-- **Projects**:
-  - *Water level and Energy Forecasting System to EEP Plants*: A machine learning dashboard forecasting Ethiopian Hydro-power plant output for the Ethiopian Electric Power (EEP) plants.
-  - *Computer Vision Detection Model*: Advanced object detection and classification models using Deep Learning.
-  - *Full Stack Web Applications*: Modern interactive web apps with clean UI, backend Express server, and Mongo database.
-- **Certificates**:
-  - Data Science Professional (Comprehensive training in DS fundamentals)
-  - Machine Learning Program (Advanced ML model building and deployment)
-  - Deep Learning & Computer Vision (Neural networks, CNNs, AI computer vision)
-- **GitHub**: https://github.com/nahomteshome126-ui
-- **CV/Resume**: Visitors can download his CV directly from the Certificates & CV section on the page.
+Key Information about Nahom Teshome:
+- **Title**: Data Scientist & Full-Stack Software Developer
+- **Education**: Data Science Student at Debre Berhan University (DBU), Ethiopia
+- **Technical Skills**:
+  - Languages & Databases: Python, Power BI, PostgreSQL, C++, R, SQL, JavaScript, TypeScript, MongoDB
+  - AI & Data Science: Machine Learning, Deep Learning, TensorFlow, PyTorch, Computer Vision (OpenCV, YOLO), NLP, Pandas, NumPy, Seaborn
+  - Web Development: Node.js, Express, React, Vite, HTML5, CSS3, REST APIs
+- **Featured Projects**:
+  1. *EEP Water Level & Energy Forecasting*: Hydropower forecasting dashboard for Ethiopian Electric Power plants using time-series models (ARIMA/LSTM).
+  2. *Computer Vision Detection Model*: Real-time object detection and tracking using CNNs, YOLO, and MobileNet backbones.
+  3. *Intelligent Web Applications*: Responsive full-stack web products integrated with MongoDB databases and admin alert systems.
+  4. *Reddit & Data Sentiment Analytics*: NLP-driven analytics platform extracting public sentiment trends using Python, Power BI, and PostgreSQL.
+- **Contact Details**:
+  - Phone: +251 921 971 146
+  - WhatsApp: +251 980 291 221 (https://wa.me/251980291221)
+  - Email: nahomteshome126@gmail.com
+  - Location: Debre Berhan, Amhara, Ethiopia
+  - GitHub: https://github.com/nahomteshome126-ui
+  - LinkedIn: https://linkedin.com/in/nahomteshome21
 
-If someone asks how to contact Nahom, tell them they can fill out the contact form or leave a comment on this website. You can also mention they can find his GitHub and LinkedIn links on the page.
-Always reply as Nahom's assistant. Do not reveal that you are a general AI unless specifically asked, and stay on topic about Nahom's career, education, and skills.
+Guidelines:
+- Keep answers helpful, concise, engaging, and friendly.
+- Always answer from Nahom's perspective as his AI assistant.
 `;
+
+// Smart Fallback Assistant Knowledge Base when offline or API key pending
+function getSmartFallbackResponse(userMessage) {
+    const msg = userMessage.toLowerCase();
+
+    if (msg.includes('who') || msg.includes('about') || msg.includes('nahom') || msg.includes('name')) {
+        return "Nahom Teshome is a passionate Data Scientist and Full-Stack Software Developer studying Data Science at Debre Berhan University in Ethiopia. He specializes in Machine Learning, Deep Learning, Computer Vision, and modern Web Applications.";
+    }
+
+    if (msg.includes('skill') || msg.includes('language') || msg.includes('tool') || msg.includes('tech') || msg.includes('python') || msg.includes('sql') || msg.includes('power bi')) {
+        return "Nahom's technical skill set includes Python, Power BI, PostgreSQL, C++, R, SQL, Machine Learning, Deep Learning, PyTorch, TensorFlow, Computer Vision (OpenCV/YOLO), Pandas, JavaScript, React, Node.js, and MongoDB.";
+    }
+
+    if (msg.includes('project') || msg.includes('eep') || msg.includes('forecasting') || msg.includes('vision') || msg.includes('app') || msg.includes('sentiment')) {
+        return "Nahom has built several featured projects:\n1. EEP Water Level & Energy Forecasting (Hydropower time-series prediction)\n2. Real-Time Computer Vision Detection Model (YOLO/PyTorch object tracking)\n3. Intelligent Full-Stack Web Suite (Node.js, Express, MongoDB)\n4. Reddit & Data Sentiment Analytics (NLP with Python, Power BI & PostgreSQL).";
+    }
+
+    if (msg.includes('contact') || msg.includes('phone') || msg.includes('call') || msg.includes('whatsapp') || msg.includes('email') || msg.includes('reach') || msg.includes('location')) {
+        return "You can contact Nahom directly via:\n• Phone: +251 921 971 146\n• WhatsApp: +251 980 291 221\n• Email: nahomteshome126@gmail.com\n• Location: Debre Berhan, Ethiopia\nOr fill out the Contact Form on this page!";
+    }
+
+    if (msg.includes('resume') || msg.includes('cv') || msg.includes('certificate') || msg.includes('download')) {
+        return "You can download Nahom's complete Curriculum Vitae (CV) and professional Data Science, Machine Learning, and Deep Learning certificates directly in the 'Credentials & Resume' section on this page!";
+    }
+
+    return "Hello! I am Nahom Teshome's AI Assistant. I can tell you all about his Data Science background, ML/DL projects, technical skills (Python, Power BI, PostgreSQL, C++, R, SQL, etc.), or how to contact him. What would you like to know?";
+}
 
 router.post('/', async (req, res) => {
     const { message, history } = req.body;
@@ -37,18 +63,15 @@ router.post('/', async (req, res) => {
     }
 
     const apiKey = process.env.GEMINI_API_KEY;
-    console.log('API Key present:', !!apiKey);
-    console.log('API Key length:', apiKey?.length);
-    
+
     if (!apiKey) {
-        console.error('❌ GEMINI_API_KEY not found in environment variables');
-        // Fallback demo mode if Gemini API key is not configured in Vercel
+        // Return smart Knowledge Base response cleanly without demo mode error
+        const fallbackMsg = getSmartFallbackResponse(message);
         return res.json({ 
             success: true, 
-            message: "Hello! I'm Nahom's AI Assistant. [Demo Mode]: The Gemini API key is not configured. Nahom is a Data Science student specializing in Machine Learning, Deep Learning, and Web Development. How can I help you contact him?" 
+            message: fallbackMsg 
         });
     }
-    console.log('✅ API Key found, proceeding with Gemini API call');
 
     try {
         const formattedContents = [];
@@ -67,7 +90,6 @@ router.post('/', async (req, res) => {
         });
 
         const apiURL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-        console.log('Sending request to Gemini API...');
         
         const response = await fetch(apiURL, {
             method: 'POST',
@@ -85,39 +107,23 @@ router.post('/', async (req, res) => {
         });
 
         if (!response.ok) {
-            const errText = await response.text();
-            console.error(`Gemini API error: ${response.status}`, errText);
-            throw new Error(`Gemini API error: ${response.status} - ${errText}`);
+            const fallbackMsg = getSmartFallbackResponse(message);
+            return res.json({ success: true, message: fallbackMsg });
         }
 
         const data = await response.json();
         
         if (!data.candidates || data.candidates.length === 0) {
-            console.error('No candidates in Gemini response:', data);
-            return res.json({ 
-                success: true, 
-                message: "I'm sorry, I couldn't generate a response. Please try again." 
-            });
+            const fallbackMsg = getSmartFallbackResponse(message);
+            return res.json({ success: true, message: fallbackMsg });
         }
 
-        const botResponse = data.candidates[0]?.content?.parts?.[0]?.text || "I'm sorry, I couldn't generate a response.";
-        console.log('Gemini API success');
+        const botResponse = data.candidates[0]?.content?.parts?.[0]?.text || getSmartFallbackResponse(message);
         res.json({ success: true, message: botResponse });
     } catch (error) {
-        console.error('Chat error:', error);
-        
-        // Check for quota exceeded errors
-        if (error.message && error.message.includes('429')) {
-            return res.status(429).json({ 
-                success: false, 
-                error: 'Gemini API quota exceeded. Please try again in a few moments or upgrade to a paid plan at https://ai.google.dev/pricing' 
-            });
-        }
-        
-        res.status(500).json({ 
-            success: false, 
-            error: `Failed to communicate with AI assistant: ${error.message}` 
-        });
+        console.error('Chat error fallback:', error);
+        const fallbackMsg = getSmartFallbackResponse(message);
+        res.json({ success: true, message: fallbackMsg });
     }
 });
 

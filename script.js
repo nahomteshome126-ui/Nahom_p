@@ -339,14 +339,101 @@ const chatForm = document.getElementById('chat-form');
 const chatInput = document.getElementById('chat-input');
 const chatMessages = document.getElementById('chat-messages');
 const chatSuggestions = document.getElementById('chat-suggestions');
+const chatVoiceToggle = document.getElementById('chat-voice-toggle');
+const chatMicBtn = document.getElementById('chat-mic-btn');
 
 let chatHistory = []; // Tracks [{role: 'user'|'bot', text: '...'}]
+let voiceOutputEnabled = true; // Voice Output enabled by default
+let recognition = null;
+let isListening = false;
+
+// Initialize Speech Synthesis & Voice Output Toggle
+if (chatVoiceToggle) {
+    chatVoiceToggle.addEventListener('click', () => {
+        voiceOutputEnabled = !voiceOutputEnabled;
+        chatVoiceToggle.textContent = voiceOutputEnabled ? '🔊 Voice ON' : '🔇 Muted';
+        chatVoiceToggle.classList.toggle('active', voiceOutputEnabled);
+        if (!voiceOutputEnabled && window.speechSynthesis) {
+            window.speechSynthesis.cancel();
+        }
+    });
+}
+
+function speakText(text) {
+    if (!voiceOutputEnabled || !('speechSynthesis' in window)) return;
+    try {
+        window.speechSynthesis.cancel(); // Stop current speaking
+        const cleanText = text.replace(/<[^>]*>?/gm, '').replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
+        const utterance = new SpeechSynthesisUtterance(cleanText);
+        utterance.rate = 1.0;
+        utterance.pitch = 1.0;
+        window.speechSynthesis.speak(utterance);
+    } catch (e) {
+        console.warn('Speech synthesis error:', e);
+    }
+}
+
+// Initialize Speech Recognition (Microphone Input)
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+if (SpeechRecognition && chatMicBtn) {
+    recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+
+    recognition.onstart = () => {
+        isListening = true;
+        chatMicBtn.classList.add('listening');
+        chatMicBtn.title = "Listening... Speak now";
+    };
+
+    recognition.onresult = (event) => {
+        let transcript = '';
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+            transcript += event.results[i][0].transcript;
+        }
+        if (chatInput) chatInput.value = transcript;
+    };
+
+    recognition.onerror = (event) => {
+        console.warn('Speech recognition error:', event.error);
+        stopListening();
+    };
+
+    recognition.onend = () => {
+        stopListening();
+        if (chatInput && chatInput.value.trim()) {
+            chatForm.dispatchEvent(new Event('submit'));
+        }
+    };
+
+    function stopListening() {
+        isListening = false;
+        if (chatMicBtn) {
+            chatMicBtn.classList.remove('listening');
+            chatMicBtn.title = "Voice Search (Microphone)";
+        }
+    }
+
+    chatMicBtn.addEventListener('click', () => {
+        if (isListening) {
+            recognition.stop();
+        } else {
+            try {
+                recognition.start();
+            } catch (e) {
+                console.warn('Speech start error:', e);
+            }
+        }
+    });
+} else if (chatMicBtn) {
+    chatMicBtn.style.display = 'none'; // Hide mic button if browser doesn't support Web Speech API
+}
 
 if (chatToggle && chatClose && chatWindow) {
     // Open/Close chat window
     chatToggle.addEventListener('click', () => {
         chatWindow.classList.toggle('active');
-        // Hide badge pulse when user interacts
         const pulse = chatToggle.querySelector('.chat-pulse');
         if (pulse) pulse.style.display = 'none';
         
@@ -357,6 +444,7 @@ if (chatToggle && chatClose && chatWindow) {
 
     chatClose.addEventListener('click', () => {
         chatWindow.classList.remove('active');
+        if (window.speechSynthesis) window.speechSynthesis.cancel();
     });
 
     // Handle suggestion chips
@@ -384,12 +472,16 @@ function appendMessage(role, text) {
     
     // Convert newlines to breaks or format markdown links
     let formattedText = escapeHtml(text).replace(/\n/g, '<br>');
-    // Simple regex to parse markdown links like [Text](URL)
     formattedText = formattedText.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline; font-weight: 600;">$1</a>');
     
     bubble.innerHTML = `<p>${formattedText}</p>`;
     chatMessages.appendChild(bubble);
     chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    // Speak bot message out loud if voice output is enabled
+    if (role === 'bot') {
+        speakText(text);
+    }
 }
 
 function appendLoading() {
@@ -423,14 +515,7 @@ async function sendUserMessage(text) {
             appendMessage('bot', data.message);
             chatHistory.push({ role: 'bot', text: data.message });
         } else {
-            // Show the actual error message from the backend
             let errorMsg = data.error || 'An error occurred while communicating with the AI assistant.';
-            // Make quota error user-friendly
-            if (errorMsg.includes('quota exceeded')) {
-                errorMsg = '⏱️ ' + errorMsg;
-            } else {
-                errorMsg = '⚠️ Error: ' + errorMsg;
-            }
             appendMessage('bot', errorMsg);
             console.error('API Error:', data.error);
         }
