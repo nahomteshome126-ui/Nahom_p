@@ -11,11 +11,11 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script type="module" src="script.js"></script>
 </head>
-<body>
+<body class="dark-mode">
 
     <!-- Navigation -->
     <nav class="navbar">
@@ -66,47 +66,69 @@
     <!-- Main Content -->
     <main>
         <!-- Hero Section -->
-        <section id="home" class="hero">
+        <!-- Hero Section -->
+        <section id="home" class="hero" style="padding-top: 120px;">
             <canvas id="hero-canvas" class="hero-canvas"></canvas>
-            <div class="hero-container">
-                <div class="hero-img-wrapper">
-                    <img src="images/Nahom.png" alt="Nahom Teshome" class="profile-img">
-                    <div class="profile-glow"></div>
-                </div>
-
-                <div class="hero-text">
-                    <span class="badge">Available for Work</span>
-                    <h1>Hi, I'm <span class="highlight">Nahom Teshome</span></h1>
-                    <p class="hero-subtitle">Data Science Student | ML & DL Enthusiast | Full-Stack Web Developer</p>
-                    <p class="hero-description">
-                        Building intelligent systems at the intersection of data, machine learning, and clean aesthetics.
-                        Passionate about neural networks, computer vision, and modern web application development.
+            <div class="hero-pari-container" style="position: relative; z-index: 2;">
+                <div class="hero-pari-left">
+                    <h1>
+                        Hello,<br>
+                        This is <span class="highlight-name">NAHOM TESHOME</span> , I'm a Professional <span class="highlight-role">Data Scientist &amp; Software Developer</span>.
+                    </h1>
+                    <p style="color: #94a3b8; font-size: 1.05rem; margin-top: 15px; max-width: 540px; line-height: 1.7;">
+                        Building intelligent data systems, machine learning architectures, and scalable full-stack web applications. 
+                        Driven by analytical rigor, deep learning, and clean code aesthetics.
                     </p>
 
-                    <div class="hero-buttons">
-                        <button onclick="scrollToSection('projects')" class="btn-primary">Explore Projects</button>
-                        <a href="https://github.com/nahomteshome126-ui" target="_blank" rel="noopener noreferrer" class="social-btn github">
-                            <span class="icon">🐙</span> GitHub
-                        </a>
-                        <a href="https://linkedin.com/in/nahomteshome21" target="_blank" rel="noopener noreferrer" class="social-btn linkedin">
-                            <span class="icon">💼</span> LinkedIn
-                        </a>
-                        <a href="https://huggingface.co/nahuziti" target="_blank" rel="noopener noreferrer" class="social-btn huggingface">
-                            <span class="icon">🤗</span> Hugging Face
-                        </a>
-                        <a href="https://www.kaggle.com/nnteshome" target="_blank" rel="noopener noreferrer" class="social-btn kaggle">
-                            <span class="icon">📊</span> Kaggle
-                        </a>
-                        <a href="https://www.behance.net/bigbrothor" target="_blank" rel="noopener noreferrer" class="social-btn behance">
-                            <span class="icon">🎨</span> Behance
-                        </a>
-                        <a href="https://dribbble.com/momylife" target="_blank" rel="noopener noreferrer" class="social-btn dribbble">
-                            <span class="icon">🏀</span> Dribbble
-                        </a>
+                    <div class="hero-social-row">
+                        <a href="https://github.com/nahomteshome126-ui" target="_blank" rel="noopener noreferrer" class="hero-social-icon" title="GitHub">🐙</a>
+                        <a href="https://linkedin.com/in/nahomteshome21" target="_blank" rel="noopener noreferrer" class="hero-social-icon" title="LinkedIn">💼</a>
+                        <a href="https://huggingface.co/nahuziti" target="_blank" rel="noopener noreferrer" class="hero-social-icon" title="Hugging Face">🤗</a>
+                        <a href="https://www.kaggle.com/nnteshome" target="_blank" rel="noopener noreferrer" class="hero-social-icon" title="Kaggle">📊</a>
+                        <a href="https://www.behance.net/bigbrothor" target="_blank" rel="noopener noreferrer" class="hero-social-icon" title="Behance">🎨</a>
+                        <a href="https://dribbble.com/momylife" target="_blank" rel="noopener noreferrer" class="hero-social-icon" title="Dribbble">🏀</a>
+                    </div>
+
+                    <div class="hero-action-buttons">
+                        <button onclick="scrollToSection('contact')" class="btn-dark-outline">CONTACT ME 👤</button>
+                        <a href="documents/CV.pdf" download class="btn-pink-gradient">GET RESUME 📥</a>
+                    </div>
+                </div>
+
+                <!-- Right Side Code Editor Frame -->
+                <div class="code-editor-card">
+                    <div class="code-window-header">
+                        <div class="window-dots">
+                            <span class="dot dot-red"></span>
+                            <span class="dot dot-yellow"></span>
+                            <span class="dot dot-green"></span>
+                        </div>
+                        <span class="code-window-title">nahom.js</span>
+                    </div>
+                    <div class="code-window-body">
+<pre><span class="code-keyword">const</span> <span class="code-var">coder</span> = {
+  <span class="code-prop">name</span>: <span class="code-string">'Nahom Teshome'</span>,
+  <span class="code-prop">skills</span>: [
+    <span class="code-string">'Python'</span>, <span class="code-string">'Power BI'</span>, <span class="code-string">'PostgreSQL'</span>,
+    <span class="code-string">'C++'</span>, <span class="code-string">'R'</span>, <span class="code-string">'SQL'</span>, <span class="code-string">'Machine Learning'</span>,
+    <span class="code-string">'Deep Learning'</span>, <span class="code-string">'TensorFlow'</span>, <span class="code-string">'PyTorch'</span>,
+    <span class="code-string">'Node.js'</span>, <span class="code-string">'React'</span>
+  ],
+  <span class="code-prop">hardWorker</span>: <span class="code-bool">true</span>,
+  <span class="code-prop">fastLearner</span>: <span class="code-bool">true</span>,
+  <span class="code-prop">problemSolver</span>: <span class="code-bool">true</span>,
+  <span class="code-prop">hireable</span>: <span class="code-keyword">function</span>() {
+    <span class="code-keyword">return</span> (
+      <span class="code-keyword">this</span>.hardWorker &amp;&amp;
+      <span class="code-keyword">this</span>.problemSolver &amp;&amp;
+      <span class="code-keyword">this</span>.skills.length &gt;= <span class="code-string">5</span>
+    );
+  }
+};</pre>
                     </div>
                 </div>
             </div>
-            <div class="scroll-indicator" onclick="scrollToSection('about')">
+            <div class="scroll-indicator" onclick="scrollToSection('about')" style="position: relative; z-index: 2; margin-top: 30px;">
                 <span class="mouse">
                     <span class="wheel"></span>
                 </span>
@@ -152,107 +174,167 @@
 
         <!-- Skills -->
         <section id="skills" class="section bg-alt">
-            <div class="section-header">
-                <h2>Technical Expertise</h2>
-                <div class="divider"></div>
+            <div class="section-title-badge-container">
+                <div class="section-title-badge">Skills</div>
             </div>
 
-            <div class="skills-grid">
-                <div class="skill-card">
-                    <div class="skill-info">
-                        <span class="skill-name">Machine Learning</span>
-                        <span class="skill-pct">95%</span>
-                    </div>
-                    <div class="progress"><div class="progress-bar" data-width="95%"></div></div>
-                    <p class="skill-desc">Supervised & unsupervised learning, classification, regressions, Scikit-Learn.</p>
+            <div class="developer-skills-grid">
+                <div class="developer-skill-card">
+                    <div class="developer-skill-icon">🐍</div>
+                    <span class="developer-skill-name">Python</span>
                 </div>
-
-                <div class="skill-card">
-                    <div class="skill-info">
-                        <span class="skill-name">Deep Learning</span>
-                        <span class="skill-pct">90%</span>
-                    </div>
-                    <div class="progress"><div class="progress-bar" data-width="90%"></div></div>
-                    <p class="skill-desc">Neural Networks, CNNs, NLP, TensorFlow, PyTorch.</p>
+                <div class="developer-skill-card">
+                    <div class="developer-skill-icon">📊</div>
+                    <span class="developer-skill-name">Power BI</span>
                 </div>
-
-                <div class="skill-card">
-                    <div class="skill-info">
-                        <span class="skill-name">Data Analytics</span>
-                        <span class="skill-pct">88%</span>
-                    </div>
-                    <div class="progress"><div class="progress-bar" data-width="88%"></div></div>
-                    <p class="skill-desc">Pandas, NumPy, Matplotlib, Seaborn, exploratory data analysis.</p>
+                <div class="developer-skill-card">
+                    <div class="developer-skill-icon">🐘</div>
+                    <span class="developer-skill-name">PostgreSQL</span>
                 </div>
-
-                <div class="skill-card">
-                    <div class="skill-info">
-                        <span class="skill-name">Web Development</span>
-                        <span class="skill-pct">85%</span>
-                    </div>
-                    <div class="progress"><div class="progress-bar" data-width="85%"></div></div>
-                    <p class="skill-desc">HTML5, CSS3, JavaScript ES6, Node.js, Express, MongoDB, REST APIs.</p>
+                <div class="developer-skill-card">
+                    <div class="developer-skill-icon">⚡</div>
+                    <span class="developer-skill-name">C++</span>
                 </div>
-
-                <div class="skill-card">
-                    <div class="skill-info">
-                        <span class="skill-name">Computer Vision</span>
-                        <span class="skill-pct">80%</span>
-                    </div>
-                    <div class="progress"><div class="progress-bar" data-width="80%"></div></div>
-                    <p class="skill-desc">Object detection, image segmentation, CNN classifiers, OpenCV.</p>
+                <div class="developer-skill-card">
+                    <div class="developer-skill-icon">📈</div>
+                    <span class="developer-skill-name">R</span>
+                </div>
+                <div class="developer-skill-card">
+                    <div class="developer-skill-icon">🗄️</div>
+                    <span class="developer-skill-name">SQL</span>
+                </div>
+                <div class="developer-skill-card">
+                    <div class="developer-skill-icon">🤖</div>
+                    <span class="developer-skill-name">Machine Learning</span>
+                </div>
+                <div class="developer-skill-card">
+                    <div class="developer-skill-icon">🧠</div>
+                    <span class="developer-skill-name">Deep Learning</span>
+                </div>
+                <div class="developer-skill-card">
+                    <div class="developer-skill-icon">🔥</div>
+                    <span class="developer-skill-name">PyTorch</span>
+                </div>
+                <div class="developer-skill-card">
+                    <div class="developer-skill-icon">🟧</div>
+                    <span class="developer-skill-name">TensorFlow</span>
+                </div>
+                <div class="developer-skill-card">
+                    <div class="developer-skill-icon">👁️</div>
+                    <span class="developer-skill-name">Computer Vision</span>
+                </div>
+                <div class="developer-skill-card">
+                    <div class="developer-skill-icon">🐼</div>
+                    <span class="developer-skill-name">Pandas</span>
+                </div>
+                <div class="developer-skill-card">
+                    <div class="developer-skill-icon">🌐</div>
+                    <span class="developer-skill-name">JavaScript</span>
+                </div>
+                <div class="developer-skill-card">
+                    <div class="developer-skill-icon">⚛️</div>
+                    <span class="developer-skill-name">React</span>
+                </div>
+                <div class="developer-skill-card">
+                    <div class="developer-skill-icon">🟢</div>
+                    <span class="developer-skill-name">Node.js</span>
+                </div>
+                <div class="developer-skill-card">
+                    <div class="developer-skill-icon">🍃</div>
+                    <span class="developer-skill-name">MongoDB</span>
                 </div>
             </div>
         </section>
 
         <!-- Projects -->
         <section id="projects" class="section">
-            <div class="section-header">
-                <h2>Featured Projects</h2>
-                <div class="divider"></div>
+            <div style="display: flex; align-items: center; justify-content: flex-start; margin-bottom: 40px; max-width: 1000px; margin-left: auto; margin-right: auto;">
+                <div class="section-title-badge" style="margin: 0;">PROJECTS</div>
             </div>
 
-            <div class="projects-grid">
-                <div class="project-card">
-                    <div class="project-tag">Machine Learning</div>
-                    <h3>Water Level & Energy Forecasting</h3>
-                    <p class="project-sub">Hydropower Forecasting dashboard built for Ethiopian Electric Power (EEP) Plants.</p>
-                    <p class="project-details">Uses time-series forecasting algorithms (ARIMA/LSTM) to predict water reservoir inflows and future energy production, optimizing power grid dispatch.</p>
-                    <div class="project-tech">
-                        <span>Python</span>
-                        <span>LSTM</span>
-                        <span>Flask</span>
-                        <span>Pandas</span>
+            <div class="projects-stacked-container">
+                <!-- Project Card 1: EEP Hydropower Forecasting -->
+                <div class="project-code-card">
+                    <div class="project-code-header">
+                        <div class="window-dots">
+                            <span class="dot dot-red"></span>
+                            <span class="dot dot-yellow"></span>
+                            <span class="dot dot-green"></span>
+                        </div>
+                        <span class="project-code-title">EEP-HYDROPOWER-FORECASTING</span>
+                        <button class="project-details-btn" onclick="openProjectModal('eep')">Details</button>
                     </div>
-                    <button class="project-btn" onclick="openProjectModal('eep')">Details</button>
+                    <div class="code-window-body">
+<pre><span class="code-keyword">const</span> <span class="code-var">project</span> = {
+  <span class="code-prop">name</span>: <span class="code-string">'EEP WATER LEVEL &amp; ENERGY FORECASTING'</span>,
+  <span class="code-prop">tools</span>: [<span class="code-string">'Python'</span>, <span class="code-string">'LSTM'</span>, <span class="code-string">'Flask'</span>, <span class="code-string">'Pandas'</span>, <span class="code-string">'Power BI'</span>, <span class="code-string">'PostgreSQL'</span>],
+  <span class="code-prop">myRole</span>: <span class="code-string">'Data Scientist &amp; Lead Developer'</span>,
+  <span class="code-prop">Description</span>: <span class="code-string">'Hydropower Forecasting dashboard built for Ethiopian Electric Power (EEP) Plants. Uses time-series models (ARIMA/LSTM) to predict water reservoir inflows and future energy production, optimizing grid dispatch.'</span>
+};</pre>
+                    </div>
                 </div>
 
-                <div class="project-card">
-                    <div class="project-tag">Deep Learning</div>
-                    <h3>Computer Vision Detection Model</h3>
-                    <p class="project-sub">Real-time object detection and classification system using Convolutional Neural Networks.</p>
-                    <p class="project-details">Custom trained models utilizing Transfer Learning on YOLO and MobileNet architectures to detect and track specific targets in live video feeds.</p>
-                    <div class="project-tech">
-                        <span>TensorFlow</span>
-                        <span>OpenCV</span>
-                        <span>YOLO</span>
-                        <span>PyTorch</span>
+                <!-- Project Card 2: Computer Vision Model -->
+                <div class="project-code-card">
+                    <div class="project-code-header">
+                        <div class="window-dots">
+                            <span class="dot dot-red"></span>
+                            <span class="dot dot-yellow"></span>
+                            <span class="dot dot-green"></span>
+                        </div>
+                        <span class="project-code-title">COMPUTER-VISION-DETECTION</span>
+                        <button class="project-details-btn" onclick="openProjectModal('cv')">Details</button>
                     </div>
-                    <button class="project-btn" onclick="openProjectModal('cv')">Details</button>
+                    <div class="code-window-body">
+<pre><span class="code-keyword">const</span> <span class="code-var">project</span> = {
+  <span class="code-prop">name</span>: <span class="code-string">'REAL-TIME COMPUTER VISION DETECTION MODEL'</span>,
+  <span class="code-prop">tools</span>: [<span class="code-string">'TensorFlow'</span>, <span class="code-string">'OpenCV'</span>, <span class="code-string">'YOLO'</span>, <span class="code-string">'PyTorch'</span>, <span class="code-string">'Python'</span>],
+  <span class="code-prop">myRole</span>: <span class="code-string">'AI &amp; ML Engineer'</span>,
+  <span class="code-prop">Description</span>: <span class="code-string">'Real-time object detection and classification system using Convolutional Neural Networks. Fine-tuned YOLO framework with MobileNet backbones for edge-optimized video feed processing.'</span>
+};</pre>
+                    </div>
                 </div>
 
-                <div class="project-card">
-                    <div class="project-tag">Full-Stack</div>
-                    <h3>Intelligent Web Applications</h3>
-                    <p class="project-sub">Modern web apps with responsive frontends and secure database integrations.</p>
-                    <p class="project-details">Clean UI dashboard designs featuring secure session management, real-time client validation, REST API integrations, and database optimizations.</p>
-                    <div class="project-tech">
-                        <span>NodeJS</span>
-                        <span>Express</span>
-                        <span>MongoDB</span>
-                        <span>Vite</span>
+                <!-- Project Card 3: Intelligent Web Applications -->
+                <div class="project-code-card">
+                    <div class="project-code-header">
+                        <div class="window-dots">
+                            <span class="dot dot-red"></span>
+                            <span class="dot dot-yellow"></span>
+                            <span class="dot dot-green"></span>
+                        </div>
+                        <span class="project-code-title">FULLSTACK-WEB-APPLICATIONS</span>
+                        <button class="project-details-btn" onclick="openProjectModal('web')">Details</button>
                     </div>
-                    <button class="project-btn" onclick="openProjectModal('web')">Details</button>
+                    <div class="code-window-body">
+<pre><span class="code-keyword">const</span> <span class="code-var">project</span> = {
+  <span class="code-prop">name</span>: <span class="code-string">'INTELLIGENT FULL-STACK WEB SUITE'</span>,
+  <span class="code-prop">tools</span>: [<span class="code-string">'Node.js'</span>, <span class="code-string">'Express'</span>, <span class="code-string">'MongoDB'</span>, <span class="code-string">'Vite'</span>, <span class="code-string">'JavaScript'</span>],
+  <span class="code-prop">myRole</span>: <span class="code-string">'Full-Stack Software Developer'</span>,
+  <span class="code-prop">Description</span>: <span class="code-string">'Responsive full-stack web products integrated with MongoDB databases, REST APIs, real-time alert monitoring, and interactive AI Chatbot interfaces.'</span>
+};</pre>
+                    </div>
+                </div>
+
+                <!-- Project Card 4: Data Analytics & Sentiment -->
+                <div class="project-code-card">
+                    <div class="project-code-header">
+                        <div class="window-dots">
+                            <span class="dot dot-red"></span>
+                            <span class="dot dot-yellow"></span>
+                            <span class="dot dot-green"></span>
+                        </div>
+                        <span class="project-code-title">DATA-ANALYTICS-SENTIMENT</span>
+                        <button class="project-details-btn" onclick="openProjectModal('analytics')">Details</button>
+                    </div>
+                    <div class="code-window-body">
+<pre><span class="code-keyword">const</span> <span class="code-var">project</span> = {
+  <span class="code-prop">name</span>: <span class="code-string">'REDDIT &amp; DATA SENTIMENT ANALYTICS'</span>,
+  <span class="code-prop">tools</span>: [<span class="code-string">'Python'</span>, <span class="code-string">'Power BI'</span>, <span class="code-string">'SQL'</span>, <span class="code-string">'R'</span>, <span class="code-string">'Pandas'</span>, <span class="code-string">'Seaborn'</span>],
+  <span class="code-prop">myRole</span>: <span class="code-string">'Data Scientist'</span>,
+  <span class="code-prop">Description</span>: <span class="code-string">'NLP-driven data analytics platform that scrapes online discussions, extracts sentiment trends using machine learning models, and presents interactive Power BI dashboards.'</span>
+};</pre>
+                    </div>
                 </div>
             </div>
         </section>
@@ -341,54 +423,92 @@
 
         <!-- Contact Me -->
         <section id="contact" class="section bg-alt">
-            <div class="section-header">
-                <h2>Get in Touch</h2>
-                <div class="divider"></div>
+            <div style="max-width: 1200px; margin: 0 auto;">
+                <div class="contact-header-title">CONTACT WITH ME</div>
             </div>
 
-            <div class="contact-container">
-                <div class="contact-info-card">
-                    <h3>Contact Information</h3>
-                    <p>Have an interesting project, job offer, or question? Send a message and let's start a conversation.</p>
-                    <ul class="contact-info-list">
-                        <li><span class="icon">📍</span> Debre Berhan, Ethiopia</li>
-                        <li><span class="icon">🏫</span> Debre Berhan University</li>
-                        <li><span class="icon">✉️</span> nahomteshome126@gmail.com</li>
-                    </ul>
+            <div class="contact-pari-container">
+                <!-- Form Card Box -->
+                <div class="contact-card-box">
+                    <p>If you have any questions or concerns, please don't hesitate to contact me. I am open to any work opportunities that align with my skills and interests.</p>
+
+                    <form id="contactForm">
+                        <div class="form-group" style="margin-bottom: 18px;">
+                            <label for="name" style="font-size: 0.85rem; color: #94a3b8; font-weight: 600; display: block; margin-bottom: 6px;">Your Name:</label>
+                            <input type="text" id="name" placeholder="Enter your name" required style="width: 100%; padding: 12px 16px; background: #070914; border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 8px; color: #fff; outline: none;">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 18px;">
+                            <label for="email" style="font-size: 0.85rem; color: #94a3b8; font-weight: 600; display: block; margin-bottom: 6px;">Your Email:</label>
+                            <input type="email" id="email" placeholder="Enter your email" required style="width: 100%; padding: 12px 16px; background: #070914; border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 8px; color: #fff; outline: none;">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 22px;">
+                            <label for="message" style="font-size: 0.85rem; color: #94a3b8; font-weight: 600; display: block; margin-bottom: 6px;">Your Message:</label>
+                            <textarea id="message" placeholder="Type your message..." rows="5" required style="width: 100%; padding: 12px 16px; background: #070914; border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 8px; color: #fff; outline: none; resize: vertical;"></textarea>
+                        </div>
+                        <button type="submit" class="btn-pink-gradient btn-submit" style="width: 100%; justify-content: center;">SEND MESSAGE ✉️</button>
+                        <div id="formStatus" class="form-status" style="margin-top: 15px; text-align: center; font-weight: 600;"></div>
+                    </form>
                 </div>
 
-                <form id="contactForm" class="glass-form">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="name">Your Name</label>
-                            <input type="text" id="name" placeholder="John Doe" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Your Email</label>
-                            <input type="email" id="email" placeholder="john@example.com" required>
+                <!-- Contact Information & Icons -->
+                <div style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                    <div class="contact-info-list-pari">
+                        <a href="mailto:nahomteshome126@gmail.com" class="contact-info-item-pari">
+                            <div class="contact-icon-circle">@</div>
+                            <span>nahomteshome126@gmail.com</span>
+                        </a>
+                        <a href="tel:+251921971146" class="contact-info-item-pari">
+                            <div class="contact-icon-circle">📞</div>
+                            <span>+251 921 971 146</span>
+                        </a>
+                        <a href="https://wa.me/251980291221" target="_blank" rel="noopener noreferrer" class="contact-info-item-pari">
+                            <div class="contact-icon-circle">💬</div>
+                            <span>+251 980 291 221 (WhatsApp)</span>
+                        </a>
+                        <div class="contact-info-item-pari">
+                            <div class="contact-icon-circle">📍</div>
+                            <span>Debre Berhan, Amhara, Ethiopia</span>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="message">Your Message</label>
-                        <textarea id="message" placeholder="Type your message here..." rows="5" required></textarea>
+
+                    <!-- Social Icons Row -->
+                    <div class="hero-social-row" style="margin-top: 15px;">
+                        <a href="https://github.com/nahomteshome126-ui" target="_blank" rel="noopener noreferrer" class="hero-social-icon" title="GitHub">🐙</a>
+                        <a href="https://linkedin.com/in/nahomteshome21" target="_blank" rel="noopener noreferrer" class="hero-social-icon" title="LinkedIn">💼</a>
+                        <a href="https://huggingface.co/nahuziti" target="_blank" rel="noopener noreferrer" class="hero-social-icon" title="Hugging Face">🤗</a>
+                        <a href="https://www.kaggle.com/nnteshome" target="_blank" rel="noopener noreferrer" class="hero-social-icon" title="Kaggle">📊</a>
+                        <a href="https://www.behance.net/bigbrothor" target="_blank" rel="noopener noreferrer" class="hero-social-icon" title="Behance">🎨</a>
                     </div>
-                    <button type="submit" class="btn-submit">Send Message</button>
-                    <div id="formStatus" class="form-status"></div>
-                </form>
+                </div>
+
+                <!-- Vertical Contact Badge -->
+                <div class="vertical-contact-badge">
+                    CONTACT
+                </div>
             </div>
         </section>
     </main>
 
     <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-logo">Nahom<span>.ai</span></div>
-            <p>© 2026 Nahom Teshome | Data Scientist</p>
-            <div class="footer-links">
-                <a href="/admin.html" class="admin-link">🔑 Admin Portal</a>
-            </div>
+    <footer class="footer-pari">
+        <div class="footer-left">
+            © Developer Portfolio by <span>Nahom Teshome</span>
+        </div>
+        <div class="footer-right">
+            <a href="https://github.com/nahomteshome126-ui" target="_blank" rel="noopener noreferrer" class="github-stat-btn">
+                <span>★ STAR</span>
+            </a>
+            <a href="https://github.com/nahomteshome126-ui" target="_blank" rel="noopener noreferrer" class="github-stat-btn">
+                <span>⑂ FORK</span>
+            </a>
+            <a href="/admin.html" class="admin-link" style="color: #94a3b8; font-size: 0.85rem; text-decoration: none; font-weight: 600;">🔑 Admin Portal</a>
         </div>
     </footer>
+
+    <!-- Floating Scroll To Top Button -->
+    <button id="scrollToTopBtn" class="floating-back-to-top" aria-label="Scroll to Top">
+        ↑
+    </button>
 
     <!-- Floating AI Chatbot Widget -->
     <div id="chat-widget" class="chat-widget collapsed">

@@ -479,6 +479,17 @@ const PROJECT_DATA = {
             "Implemented admin dashboard security layers including password verification.",
             "Clean visual animations, dark modes, and complete layout responsiveness."
         ]
+    },
+    analytics: {
+        title: "Reddit & Data Sentiment Analytics",
+        tag: "Data Science & Natural Language Processing",
+        desc: "An NLP-powered data science platform that harvests public opinions and classifies sentiment patterns using Python, Power BI, SQL, and R.",
+        features: [
+            "Extracts and cleans discussion threads using PRAW (Reddit API) and Pandas.",
+            "Computes polarity and subjectivity scores with TextBlob and VADER NLP engines.",
+            "Visualizes sentiment distribution with Seaborn and Power BI dashboards.",
+            "Stores analytical structured metrics in PostgreSQL database tables for historic tracking."
+        ]
     }
 };
 
@@ -895,4 +906,20 @@ function playChimeSound() {
     } catch (e) {
         console.warn('AudioContext chime failed:', e);
     }
+}
+
+// ================= FLOATING BACK TO TOP BUTTON =================
+const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+if (scrollToTopBtn) {
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            scrollToTopBtn.classList.add('visible');
+        } else {
+            scrollToTopBtn.classList.remove('visible');
+        }
+    });
+
+    scrollToTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
 }

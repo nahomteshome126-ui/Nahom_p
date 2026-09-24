@@ -26,7 +26,7 @@
 
 .dark-mode {
     /* Dark Mode Tokens */
-    --bg-primary: #0b0f19;
+    --bg-primary: #070913;
     --bg-secondary: #111827;
     --bg-alt: #162032;
     --text-primary: #f8fafc;
@@ -1657,4 +1657,535 @@ footer {
     60% { transform: rotate(-8deg); }
     75% { transform: rotate(4deg); }
     85% { transform: rotate(-4deg); }
+}
+
+/* ================= PARI NAGPAL DEVELOPER THEME STYLES ================= */
+
+/* Developer Grid Pattern Overlay */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Color Accent Utilities */
+.text-pink {
+    color: #ec4899;
+}
+.text-green {
+    color: #10b981;
+}
+.text-cyan {
+    color: #06b6d4;
+}
+.text-purple {
+    color: #a855f7;
+}
+
+/* Gradient Pill Buttons */
+.btn-pink-gradient {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    background: linear-gradient(90deg, #d946ef, #8b5cf6);
+    color: #ffffff !important;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(217, 70, 239, 0.4);
+    transition: all 0.3s ease;
+}
+
+.btn-pink-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(217, 70, 239, 0.6);
+}
+
+.btn-dark-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    background: rgba(13, 14, 26, 0.8);
+    color: #ffffff !important;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border-radius: 50px;
+    border: 1.5px solid rgba(139, 92, 246, 0.6);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-dark-outline:hover {
+    background: rgba(139, 92, 246, 0.2);
+    border-color: #ec4899;
+    box-shadow: 0 0 20px rgba(236, 72, 153, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Code Editor Card Frame */
+.code-editor-card {
+    background: #090a15;
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(139, 92, 246, 0.15);
+    overflow: hidden;
+    width: 100%;
+    max-width: 580px;
+}
+
+.code-window-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+    background: #0d0f22;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.window-dots {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.dot-red {
+    background-color: #ff5f56;
+}
+
+.dot-yellow {
+    background-color: #ffbd2e;
+}
+
+.dot-green {
+    background-color: #27c93f;
+}
+
+.code-window-title {
+    font-family: 'Fira Code', monospace, sans-serif;
+    font-size: 0.85rem;
+    color: #10b981;
+    font-weight: 600;
+}
+
+.code-window-body {
+    padding: 24px;
+    font-family: 'Fira Code', Consolas, Monaco, 'Courier New', monospace;
+    font-size: 0.92rem;
+    line-height: 1.8;
+    color: #e2e8f0;
+    overflow-x: auto;
+}
+
+/* Code Syntax Highlighting Colors */
+.code-keyword { color: #f43f5e; font-weight: 600; }
+.code-var { color: #38bdf8; }
+.code-prop { color: #93c5fd; }
+.code-string { color: #facc15; }
+.code-bool { color: #fb923c; }
+.code-func { color: #c084fc; }
+.code-comment { color: #6b7280; font-style: italic; }
+.code-punct { color: #cbd5e1; }
+
+/* Hero Section pari style */
+.hero-pari-container {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 50px;
+    align-items: center;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 60px 0;
+}
+
+.hero-pari-left h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1.25;
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+.hero-pari-left .highlight-name {
+    color: #ec4899;
+    font-weight: 800;
+}
+
+.hero-pari-left .highlight-role {
+    color: #10b981;
+    font-weight: 800;
+}
+
+.hero-social-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 25px 0 35px 0;
+}
+
+.hero-social-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.hero-social-icon:hover {
+    background: var(--accent-gradient);
+    color: #ffffff;
+    border-color: transparent;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
+}
+
+.hero-action-buttons {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Skills pari style */
+.section-title-badge-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-bottom: 50px;
+}
+
+.section-title-badge-container::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.4), transparent);
+    z-index: 1;
+}
+
+.section-title-badge {
+    position: relative;
+    z-index: 2;
+    background: #121428;
+    border: 1px solid rgba(139, 92, 246, 0.4);
+    padding: 10px 32px;
+    border-radius: 8px;
+    color: #ffffff;
+    font-family: 'Syne', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.developer-skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.developer-skill-card {
+    background: #0d0f22;
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    border-radius: 12px;
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.developer-skill-card:hover {
+    border-color: #ec4899;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(236, 72, 153, 0.25);
+    background: #141733;
+}
+
+.developer-skill-icon {
+    font-size: 2.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+}
+
+.developer-skill-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #e2e8f0;
+    text-align: center;
+}
+
+/* Projects pari style */
+.projects-stacked-container {
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.project-code-card {
+    background: #090a15;
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+}
+
+.project-code-card:hover {
+    border-color: rgba(236, 72, 153, 0.6);
+    box-shadow: 0 20px 50px rgba(236, 72, 153, 0.2);
+}
+
+.project-code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: #0d0f22;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.project-code-title {
+    color: #10b981;
+    font-family: 'Fira Code', monospace, sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.project-details-btn {
+    background: rgba(139, 92, 246, 0.15);
+    border: 1px solid rgba(139, 92, 246, 0.4);
+    color: #38bdf8;
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.project-details-btn:hover {
+    background: var(--accent-gradient);
+    color: #ffffff;
+    border-color: transparent;
+}
+
+/* Contact pari style */
+.contact-pari-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: start;
+    position: relative;
+}
+
+.contact-header-title {
+    color: #10b981;
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+}
+
+.contact-card-box {
+    background: #0d0f22;
+    border: 1px solid rgba(139, 92, 246, 0.25);
+    border-radius: 16px;
+    padding: 35px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+.contact-card-box p {
+    color: #94a3b8;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+.contact-info-list-pari {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    margin-bottom: 30px;
+}
+
+.contact-info-item-pari {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: #f1f5f9;
+    font-size: 1.05rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.contact-info-item-pari:hover {
+    color: #ec4899;
+}
+
+.contact-icon-circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(147, 197, 253, 0.1);
+    border: 1px solid rgba(147, 197, 253, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: #93c5fd;
+    flex-shrink: 0;
+}
+
+.vertical-contact-badge {
+    writing-mode: vertical-rl;
+    text-transform: uppercase;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    letter-spacing: 4px;
+    font-size: 1rem;
+    color: #ffffff;
+    background: #141733;
+    border: 1px solid rgba(139, 92, 246, 0.4);
+    padding: 24px 10px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 220px;
+}
+
+/* Footer pari style */
+footer.footer-pari {
+    background: #070814;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 25px 8%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: #94a3b8;
+}
+
+.footer-left span {
+    color: #10b981;
+    font-weight: 600;
+}
+
+.footer-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.github-stat-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.github-stat-btn:hover {
+    color: #ec4899;
+}
+
+/* Floating Scroll To Top Button */
+.floating-back-to-top {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ec4899, #8b5cf6);
+    color: #ffffff;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(236, 72, 153, 0.5);
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.floating-back-to-top.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.floating-back-to-top:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(236, 72, 153, 0.7);
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .hero-pari-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    .contact-pari-container {
+        grid-template-columns: 1fr;
+    }
+    .vertical-contact-badge {
+        display: none;
+    }
 }
