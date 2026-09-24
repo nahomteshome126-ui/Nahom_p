@@ -1851,31 +1851,42 @@ body::before {
 .hero-social-row {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
     margin: 25px 0 35px 0;
+    flex-wrap: wrap;
 }
 
-.hero-social-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--glass-border);
-    display: flex;
+.hero-social-btn {
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    color: var(--text-secondary);
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 50px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary) !important;
     text-decoration: none;
-    font-size: 1.2rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
 }
 
-.hero-social-icon:hover {
+.hero-social-btn:hover {
     background: var(--accent-gradient);
-    color: #ffffff;
+    color: #ffffff !important;
     border-color: transparent;
-    transform: translateY(-3px);
-    box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(236, 72, 153, 0.4);
+}
+
+.hero-social-btn .social-emoji {
+    font-size: 1.1rem;
+}
+
+.hero-social-btn .social-name {
+    font-size: 0.85rem;
+    font-weight: 600;
 }
 
 .hero-action-buttons {
