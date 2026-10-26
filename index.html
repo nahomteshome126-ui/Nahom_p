@@ -6,6 +6,12 @@
     <title>Nahom Teshome | Data Scientist & ML Engineer Portfolio</title>
     <meta name="description" content="Professional portfolio of Nahom Teshome, a Data Science student at Debre Berhan University specializing in Machine Learning, Deep Learning, and Web Development.">
     <meta name="keywords" content="Nahom Teshome, Data Scientist, Machine Learning, Deep Learning, Web Developer, Portfolio, Debre Berhan University">
+    <!-- Favicon & Brand Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="icon" type="image/png" href="images/logo.png">
     <!-- Google Site Verification (Replace with your actual token from GSC) -->
     <meta name="google-site-verification" content="CwgduwDKUJBRXjuyGVhPbb9sXq6Pn2ONyv6B3otUhWw" />
     <!-- Google Fonts -->
@@ -19,7 +25,10 @@
 
     <!-- Navigation -->
     <nav class="navbar">
-        <div class="logo">Nahom<span>.ai</span></div>
+        <a href="#home" class="logo" aria-label="Nahom.ai Home">
+            <img src="images/logo.png" alt="Nahom.ai Logo" class="brand-logo-img">
+            <span class="brand-text">Nahom<span>.ai</span></span>
+        </a>
         <ul class="nav-links">
             <li><a href="#home">Home</a></li>
             <li><a href="#about">About</a></li>
@@ -30,6 +39,17 @@
             <li><a href="#contact">Contact</a></li>
         </ul>
         <div class="nav-actions">
+            <!-- Search Bar Trigger Button -->
+            <div class="nav-search-wrapper" id="navSearchWrapper">
+                <button id="navSearchTrigger" class="nav-search-btn" aria-label="Search portfolio" title="Search (Ctrl + K)">
+                    <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <span class="search-placeholder">Search...</span>
+                    <span class="search-kbd-badge"><kbd>Ctrl</kbd> <kbd>K</kbd></span>
+                </button>
+            </div>
             <!-- Notification Bell Wrapper -->
             <div class="nav-bell-wrapper" id="navBellWrapper" style="position: relative;">
                 <button id="navBellBtn" class="nav-bell-btn" aria-label="Notifications" title="Admin Alerts">
@@ -688,6 +708,48 @@
             <div style="display: flex; gap: 10px;">
                 <button onclick="closeMonitorModal()" class="btn-primary" style="background: #475569; box-shadow: none; padding: 10px; flex: 1;">Cancel</button>
                 <button onclick="verifyMonitorPassword()" class="btn-primary" style="padding: 10px; flex: 1;">Unlock</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive Spotlight Search Modal -->
+    <div id="searchModal" class="search-modal hidden" aria-hidden="true" role="dialog" aria-modal="true">
+        <div class="search-modal-backdrop" id="searchBackdrop"></div>
+        <div class="search-modal-card">
+            <div class="search-input-header">
+                <svg class="search-input-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" id="siteSearchInput" class="site-search-input" placeholder="Search projects, skills, certificates, CV, contact..." autocomplete="off" spellcheck="false">
+                <button type="button" id="searchClearBtn" class="search-clear-btn" aria-label="Clear search" style="display: none;">✕</button>
+                <button type="button" id="searchCloseBtn" class="search-close-btn" aria-label="Close search">
+                    <kbd>ESC</kbd>
+                </button>
+            </div>
+            
+            <div class="search-filter-pills" id="searchFilterPills">
+                <button type="button" class="filter-pill active" data-category="all">All</button>
+                <button type="button" class="filter-pill" data-category="project">🚀 Projects</button>
+                <button type="button" class="filter-pill" data-category="skill">⚡ Skills</button>
+                <button type="button" class="filter-pill" data-category="credential">📜 Credentials</button>
+                <button type="button" class="filter-pill" data-category="section">📍 Sections</button>
+            </div>
+
+            <div class="search-results-container" id="searchResultsContainer">
+                <!-- Search results or suggestions loaded dynamically -->
+            </div>
+
+            <div class="search-modal-footer">
+                <div class="search-footer-hint">
+                    <span><kbd>↑</kbd> <kbd>↓</kbd> to navigate</span>
+                    <span><kbd>↵</kbd> to select</span>
+                    <span><kbd>ESC</kbd> to close</span>
+                </div>
+                <div class="search-footer-brand">
+                    <img src="images/logo.png" alt="Nahom.ai Logo" class="search-footer-logo">
+                    <span>Nahom<span>.ai</span></span>
+                </div>
             </div>
         </div>
     </div>

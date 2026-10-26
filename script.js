@@ -1008,3 +1008,589 @@ if (scrollToTopBtn) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 }
+
+// ================= SPOTLIGHT SEARCH CONTROLLER =================
+
+const searchModal = document.getElementById('searchModal');
+const searchBackdrop = document.getElementById('searchBackdrop');
+const searchTriggerBtn = document.getElementById('navSearchTrigger');
+const siteSearchInput = document.getElementById('siteSearchInput');
+const searchClearBtn = document.getElementById('searchClearBtn');
+const searchCloseBtn = document.getElementById('searchCloseBtn');
+const searchResultsContainer = document.getElementById('searchResultsContainer');
+const searchFilterPills = document.querySelectorAll('.filter-pill');
+
+let currentSearchCategory = 'all';
+let selectedSearchIndex = -1;
+
+// Highlight target element animation
+function highlightElement(selector) {
+    const el = document.querySelector(selector);
+    if (!el) return;
+    el.classList.remove('search-target-highlight');
+    // Force DOM reflow
+    void el.offsetWidth;
+    el.classList.add('search-target-highlight');
+    setTimeout(() => {
+        el.classList.remove('search-target-highlight');
+    }, 2500);
+}
+
+const SEARCH_INDEX = [
+    // Projects
+    {
+        id: 'proj-eep',
+        type: 'project',
+        badge: 'Project',
+        icon: '⚡',
+        title: 'EEP Hydropower Water Level & Energy Forecasting',
+        description: 'Hydropower Forecasting dashboard for Ethiopian Electric Power. Uses ARIMA & LSTM models to predict water inflows and optimize energy grid dispatch.',
+        keywords: ['eep', 'hydropower', 'forecasting', 'energy', 'water', 'arima', 'lstm', 'python', 'flask', 'pandas', 'power bi', 'postgresql', 'ethiopian electric power'],
+        action: () => {
+            scrollToSection('projects');
+            highlightElement('#projects');
+            if (typeof openProjectModal === 'function') openProjectModal('eep');
+        }
+    },
+    {
+        id: 'proj-cv',
+        type: 'project',
+        badge: 'Project',
+        icon: '👁️',
+        title: 'Real-Time Computer Vision Detection Model',
+        description: 'Object detection and classification using Convolutional Neural Networks, YOLO framework, and MobileNet backbones for video feeds.',
+        keywords: ['computer vision', 'cv', 'detection', 'object detection', 'yolo', 'tensorflow', 'opencv', 'pytorch', 'mobilenet', 'cnn'],
+        action: () => {
+            scrollToSection('projects');
+            highlightElement('#projects');
+            if (typeof openProjectModal === 'function') openProjectModal('cv');
+        }
+    },
+    {
+        id: 'proj-web',
+        type: 'project',
+        badge: 'Project',
+        icon: '🌐',
+        title: 'Intelligent Full-Stack Web Suite',
+        description: 'Responsive full-stack web products integrated with MongoDB databases, REST APIs, real-time alert monitoring, and interactive AI chatbot.',
+        keywords: ['fullstack', 'web', 'applications', 'node.js', 'express', 'mongodb', 'vite', 'javascript', 'rest api', 'ai chatbot'],
+        action: () => {
+            scrollToSection('projects');
+            highlightElement('#projects');
+            if (typeof openProjectModal === 'function') openProjectModal('web');
+        }
+    },
+    {
+        id: 'proj-analytics',
+        type: 'project',
+        badge: 'Project',
+        icon: '📊',
+        title: 'Reddit & Data Sentiment Analytics',
+        description: 'NLP-driven data analytics platform that scrapes online discussions, extracts sentiment trends with ML models, and presents Power BI dashboards.',
+        keywords: ['sentiment', 'nlp', 'reddit', 'data analytics', 'power bi', 'sql', 'r', 'pandas', 'seaborn'],
+        action: () => {
+            scrollToSection('projects');
+            highlightElement('#projects');
+            if (typeof openProjectModal === 'function') openProjectModal('analytics');
+        }
+    },
+    // Skills
+    {
+        id: 'skill-python',
+        type: 'skill',
+        badge: 'Skill',
+        icon: '🐍',
+        title: 'Python (NumPy, SciPy, Pandas, Scikit-learn)',
+        description: 'Core programming language for Machine Learning models, mathematical computation, data extraction, and backend logic.',
+        keywords: ['python', 'numpy', 'pandas', 'scipy', 'scikit-learn', 'data science', 'backend'],
+        action: () => {
+            scrollToSection('skills');
+            highlightElement('#skills');
+        }
+    },
+    {
+        id: 'skill-ml',
+        type: 'skill',
+        badge: 'Skill',
+        icon: '🤖',
+        title: 'Machine Learning Algorithms & Pipelines',
+        description: 'Supervised & unsupervised models, ensemble methods, random forests, XGBoost, and production pipelines.',
+        keywords: ['machine learning', 'ml', 'regression', 'classification', 'algorithms', 'scikit-learn', 'xgboost'],
+        action: () => {
+            scrollToSection('skills');
+            highlightElement('#skills');
+        }
+    },
+    {
+        id: 'skill-dl',
+        type: 'skill',
+        badge: 'Skill',
+        icon: '🧠',
+        title: 'Deep Learning & Neural Networks',
+        description: 'CNN, RNN, LSTM, Transformer architectures built and trained with PyTorch and TensorFlow.',
+        keywords: ['deep learning', 'dl', 'neural networks', 'cnn', 'rnn', 'lstm', 'pytorch', 'tensorflow', 'transformers'],
+        action: () => {
+            scrollToSection('skills');
+            highlightElement('#skills');
+        }
+    },
+    {
+        id: 'skill-powerbi',
+        type: 'skill',
+        badge: 'Skill',
+        icon: '📈',
+        title: 'Power BI Business Intelligence & Reporting',
+        description: 'Interactive analytics dashboards, complex DAX expressions, ETL pipelines, and executive KPI reporting.',
+        keywords: ['power bi', 'powerbi', 'dashboards', 'business intelligence', 'bi', 'dax'],
+        action: () => {
+            scrollToSection('skills');
+            highlightElement('#skills');
+        }
+    },
+    {
+        id: 'skill-sql',
+        type: 'skill',
+        badge: 'Skill',
+        icon: '🗄️',
+        title: 'PostgreSQL & SQL Databases',
+        description: 'Relational data modeling, advanced queries, indexes, window functions, and data warehousing.',
+        keywords: ['sql', 'postgresql', 'postgres', 'database', 'queries', 'relational'],
+        action: () => {
+            scrollToSection('skills');
+            highlightElement('#skills');
+        }
+    },
+    {
+        id: 'skill-webdev',
+        type: 'skill',
+        badge: 'Skill',
+        icon: '⚛️',
+        title: 'Modern Web Development (JavaScript, React, Node.js)',
+        description: 'Full-stack engineering, interactive UI components, REST APIs, and asynchronous microservices.',
+        keywords: ['javascript', 'js', 'react', 'node.js', 'node', 'express', 'html', 'css', 'frontend', 'backend'],
+        action: () => {
+            scrollToSection('skills');
+            highlightElement('#skills');
+        }
+    },
+    {
+        id: 'skill-mongo',
+        type: 'skill',
+        badge: 'Skill',
+        icon: '🍃',
+        title: 'MongoDB NoSQL Database',
+        description: 'Document database architecture, dynamic schemas, aggregation pipelines, and cloud Atlas clusters.',
+        keywords: ['mongodb', 'mongo', 'nosql', 'mongoose', 'database'],
+        action: () => {
+            scrollToSection('skills');
+            highlightElement('#skills');
+        }
+    },
+    {
+        id: 'skill-cpp-r',
+        type: 'skill',
+        badge: 'Skill',
+        icon: '⚙️',
+        title: 'C++ & R Statistical Computing',
+        description: 'High-performance algorithmic problem solving in C++ and statistical hypothesis modeling in R.',
+        keywords: ['c++', 'cpp', 'r', 'statistics', 'algorithms'],
+        action: () => {
+            scrollToSection('skills');
+            highlightElement('#skills');
+        }
+    },
+    // Credentials & CV
+    {
+        id: 'cred-cv',
+        type: 'credential',
+        badge: 'Resume / CV',
+        icon: '📄',
+        title: 'Curriculum Vitae (CV) / Resume',
+        description: 'Download Nahom Teshome’s complete professional Curriculum Vitae (PDF format).',
+        keywords: ['cv', 'resume', 'curriculum vitae', 'download cv', 'pdf', 'hire', 'experience'],
+        action: () => {
+            scrollToSection('certificates');
+            highlightElement('.cv-wrapper');
+        }
+    },
+    {
+        id: 'cred-ds',
+        type: 'credential',
+        badge: 'Certificate',
+        icon: '📊',
+        title: 'Data Science Professional Certificate',
+        description: 'Comprehensive certification in statistical modeling, exploratory data analysis, and ML systems.',
+        keywords: ['data science certificate', 'certification', 'credentials', 'data analysis'],
+        action: () => {
+            scrollToSection('certificates');
+            highlightElement('.cert-grid');
+        }
+    },
+    {
+        id: 'cred-ml',
+        type: 'credential',
+        badge: 'Certificate',
+        icon: '🤖',
+        title: 'Machine Learning Program Certificate',
+        description: 'Certification covering end-to-end ML algorithms, feature engineering, and model deployment pipelines.',
+        keywords: ['ml certificate', 'machine learning certification', 'credentials'],
+        action: () => {
+            scrollToSection('certificates');
+            highlightElement('.cert-grid');
+        }
+    },
+    {
+        id: 'cred-dl',
+        type: 'credential',
+        badge: 'Certificate',
+        icon: '👁️',
+        title: 'Deep Learning & Computer Vision Certificate',
+        description: 'Hands-on certification in neural networks, convolution operators, and AI computer vision.',
+        keywords: ['deep learning certificate', 'computer vision certificate', 'dl certificate'],
+        action: () => {
+            scrollToSection('certificates');
+            highlightElement('.cert-grid');
+        }
+    },
+    // Sections & Social Links
+    {
+        id: 'sec-about',
+        type: 'section',
+        badge: 'About',
+        icon: '🎓',
+        title: 'About Nahom Teshome & Academic Background',
+        description: 'Data Science Student at Debre Berhan University specializing in ML, Deep Learning, and Full-Stack Engineering.',
+        keywords: ['about', 'about me', 'bio', 'education', 'debre berhan university', 'dbu', 'student', 'background'],
+        action: () => {
+            scrollToSection('about');
+            highlightElement('#about');
+        }
+    },
+    {
+        id: 'sec-contact',
+        type: 'section',
+        badge: 'Contact',
+        icon: '✉️',
+        title: 'Contact Nahom (Email, WhatsApp, Phone)',
+        description: 'Reach out for machine learning opportunities, full-stack projects, or consulting collaborations.',
+        keywords: ['contact', 'email', 'phone', 'whatsapp', 'call', 'message', 'reach out', 'hire', 'address'],
+        action: () => {
+            scrollToSection('contact');
+            highlightElement('#contact');
+        }
+    },
+    {
+        id: 'sec-guestbook',
+        type: 'section',
+        badge: 'Guestbook',
+        icon: '💬',
+        title: 'Interactive Guestbook & Live Comments',
+        description: 'Post a greeting, question, or testimonial on Nahom’s interactive portfolio guestbook.',
+        keywords: ['guestbook', 'comments', 'leave message', 'feedback', 'post comment'],
+        action: () => {
+            scrollToSection('guestbook');
+            highlightElement('#guestbook');
+        }
+    },
+    {
+        id: 'link-github',
+        type: 'section',
+        badge: 'Social Link',
+        icon: '🐙',
+        title: 'GitHub Profile (@nahomteshome126-ui)',
+        description: 'Open-source repositories, ML models, and development contributions.',
+        keywords: ['github', 'git', 'repos', 'source code'],
+        action: () => {
+            window.open('https://github.com/nahomteshome126-ui', '_blank');
+        }
+    },
+    {
+        id: 'link-linkedin',
+        type: 'section',
+        badge: 'Social Link',
+        icon: '💼',
+        title: 'LinkedIn Profile (nahomteshome21)',
+        description: 'Connect with Nahom on LinkedIn for professional updates and networking.',
+        keywords: ['linkedin', 'connect', 'networking', 'profile'],
+        action: () => {
+            window.open('https://linkedin.com/in/nahomteshome21', '_blank');
+        }
+    },
+    {
+        id: 'link-kaggle',
+        type: 'section',
+        badge: 'Social Link',
+        icon: '📊',
+        title: 'Kaggle Data Science Profile (@nnteshome)',
+        description: 'Machine learning notebooks, datasets, and competition entries.',
+        keywords: ['kaggle', 'competitions', 'datasets', 'notebooks'],
+        action: () => {
+            window.open('https://www.kaggle.com/nnteshome', '_blank');
+        }
+    },
+    {
+        id: 'link-huggingface',
+        type: 'section',
+        badge: 'Social Link',
+        icon: '🤗',
+        title: 'Hugging Face ML Space (@nahuziti)',
+        description: 'Explore hosted AI models, pipelines, and transformer demos.',
+        keywords: ['hugging face', 'huggingface', 'models', 'transformers', 'spaces'],
+        action: () => {
+            window.open('https://huggingface.co/nahuziti', '_blank');
+        }
+    }
+];
+
+function openSearchModal() {
+    if (!searchModal) return;
+    searchModal.classList.remove('hidden');
+    searchModal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    selectedSearchIndex = -1;
+    if (siteSearchInput) {
+        siteSearchInput.value = '';
+        if (searchClearBtn) searchClearBtn.style.display = 'none';
+        renderPopularSearches();
+        setTimeout(() => siteSearchInput.focus(), 50);
+    }
+}
+
+function closeSearchModal() {
+    if (!searchModal) return;
+    searchModal.classList.add('hidden');
+    setTimeout(() => {
+        if (searchModal.classList.contains('hidden')) {
+            searchModal.style.display = 'none';
+        }
+    }, 250);
+    document.body.style.overflow = '';
+}
+
+function highlightMatches(text, query) {
+    if (!query) return text;
+    const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    return text.replace(regex, '<mark class="search-highlight">$1</mark>');
+}
+
+function renderPopularSearches() {
+    if (!searchResultsContainer) return;
+    searchResultsContainer.innerHTML = `
+        <div class="search-popular-wrapper">
+            <div class="search-popular-title">🔥 Popular Searches</div>
+            <div class="search-popular-tags">
+                <button type="button" class="search-popular-tag" data-query="Python">🐍 Python</button>
+                <button type="button" class="search-popular-tag" data-query="EEP Hydropower">⚡ EEP Forecasting</button>
+                <button type="button" class="search-popular-tag" data-query="Computer Vision">👁️ Computer Vision</button>
+                <button type="button" class="search-popular-tag" data-query="Machine Learning">🤖 Machine Learning</button>
+                <button type="button" class="search-popular-tag" data-query="Resume">📄 Resume / CV</button>
+                <button type="button" class="search-popular-tag" data-query="Contact">✉️ Contact Info</button>
+                <button type="button" class="search-popular-tag" data-query="Power BI">📈 Power BI</button>
+                <button type="button" class="search-popular-tag" data-query="MongoDB">🍃 MongoDB</button>
+            </div>
+        </div>
+    `;
+
+    searchResultsContainer.querySelectorAll('.search-popular-tag').forEach(tag => {
+        tag.addEventListener('click', () => {
+            const q = tag.getAttribute('data-query');
+            if (siteSearchInput) {
+                siteSearchInput.value = q;
+                performSearch(q);
+            }
+        });
+    });
+}
+
+function performSearch(query) {
+    if (!searchResultsContainer) return;
+    const cleanQuery = (query || '').trim().toLowerCase();
+
+    if (searchClearBtn) {
+        searchClearBtn.style.display = cleanQuery.length > 0 ? 'flex' : 'none';
+    }
+
+    if (!cleanQuery) {
+        renderPopularSearches();
+        selectedSearchIndex = -1;
+        return;
+    }
+
+    // Filter index
+    const results = SEARCH_INDEX.filter(item => {
+        // Category filter
+        if (currentSearchCategory !== 'all' && item.type !== currentSearchCategory) {
+            return false;
+        }
+
+        // Text match
+        const inTitle = item.title.toLowerCase().includes(cleanQuery);
+        const inDesc = item.description.toLowerCase().includes(cleanQuery);
+        const inKeywords = item.keywords.some(k => k.toLowerCase().includes(cleanQuery));
+
+        return inTitle || inDesc || inKeywords;
+    }).sort((a, b) => {
+        // Prioritize title matches
+        const aTitle = a.title.toLowerCase().includes(cleanQuery);
+        const bTitle = b.title.toLowerCase().includes(cleanQuery);
+        if (aTitle && !bTitle) return -1;
+        if (!aTitle && bTitle) return 1;
+        return 0;
+    });
+
+    if (results.length === 0) {
+        searchResultsContainer.innerHTML = `
+            <div class="search-empty-state">
+                <div class="search-empty-icon">🔍</div>
+                <div class="search-empty-title">No matching results found</div>
+                <div class="search-empty-desc">No entries matched "<strong>${escapeHtml(query)}</strong>". Try another keyword like Python, YOLO, EEP, or Resume.</div>
+                <button type="button" id="resetSearchQueryBtn" class="filter-pill" style="margin: 0 auto;">Clear Search</button>
+            </div>
+        `;
+        const resetBtn = document.getElementById('resetSearchQueryBtn');
+        if (resetBtn) {
+            resetBtn.addEventListener('click', () => {
+                if (siteSearchInput) {
+                    siteSearchInput.value = '';
+                    performSearch('');
+                    siteSearchInput.focus();
+                }
+            });
+        }
+        selectedSearchIndex = -1;
+        return;
+    }
+
+    let html = '';
+    results.forEach((item, index) => {
+        html += `
+            <div class="search-item ${index === 0 ? 'selected' : ''}" data-index="${index}" role="button" tabindex="0">
+                <div class="search-item-icon-box">${item.icon}</div>
+                <div class="search-item-info">
+                    <div class="search-item-header">
+                        <span class="search-item-title">${highlightMatches(escapeHtml(item.title), cleanQuery)}</span>
+                        <span class="search-item-badge">${item.badge}</span>
+                    </div>
+                    <div class="search-item-desc">${highlightMatches(escapeHtml(item.description), cleanQuery)}</div>
+                </div>
+                <div class="search-item-arrow">→</div>
+            </div>
+        `;
+    });
+
+    searchResultsContainer.innerHTML = html;
+    selectedSearchIndex = 0;
+
+    // Attach click events
+    searchResultsContainer.querySelectorAll('.search-item').forEach((itemEl, idx) => {
+        itemEl.addEventListener('click', () => {
+            closeSearchModal();
+            results[idx].action();
+        });
+        itemEl.addEventListener('mouseenter', () => {
+            searchResultsContainer.querySelectorAll('.search-item').forEach(el => el.classList.remove('selected'));
+            itemEl.classList.add('selected');
+            selectedSearchIndex = idx;
+        });
+    });
+}
+
+// Event Listeners for Search
+if (searchTriggerBtn) {
+    searchTriggerBtn.addEventListener('click', openSearchModal);
+}
+
+if (searchBackdrop) {
+    searchBackdrop.addEventListener('click', closeSearchModal);
+}
+
+if (searchCloseBtn) {
+    searchCloseBtn.addEventListener('click', closeSearchModal);
+}
+
+if (searchClearBtn && siteSearchInput) {
+    searchClearBtn.addEventListener('click', () => {
+        siteSearchInput.value = '';
+        performSearch('');
+        siteSearchInput.focus();
+    });
+}
+
+if (siteSearchInput) {
+    siteSearchInput.addEventListener('input', (e) => {
+        performSearch(e.target.value);
+    });
+
+    siteSearchInput.addEventListener('keydown', (e) => {
+        const items = searchResultsContainer ? searchResultsContainer.querySelectorAll('.search-item') : [];
+        if (!items.length) return;
+
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            selectedSearchIndex = (selectedSearchIndex + 1) % items.length;
+            updateSelectedSearchItem(items);
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            selectedSearchIndex = (selectedSearchIndex - 1 + items.length) % items.length;
+            updateSelectedSearchItem(items);
+        } else if (e.key === 'Enter') {
+            e.preventDefault();
+            if (selectedSearchIndex >= 0 && selectedSearchIndex < items.length) {
+                items[selectedSearchIndex].click();
+            }
+        }
+    });
+}
+
+function updateSelectedSearchItem(items) {
+    items.forEach((item, idx) => {
+        if (idx === selectedSearchIndex) {
+            item.classList.add('selected');
+            item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        } else {
+            item.classList.remove('selected');
+        }
+    });
+}
+
+// Category filter pills
+if (searchFilterPills) {
+    searchFilterPills.forEach(pill => {
+        pill.addEventListener('click', () => {
+            searchFilterPills.forEach(p => p.classList.remove('active'));
+            pill.classList.add('active');
+            currentSearchCategory = pill.getAttribute('data-category') || 'all';
+            if (siteSearchInput) {
+                performSearch(siteSearchInput.value);
+            }
+        });
+    });
+}
+
+// Global Keyboard Shortcut (Ctrl+K, Cmd+K, or '/')
+window.addEventListener('keydown', (e) => {
+    // Open on Ctrl+K or Cmd+K
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        if (searchModal && !searchModal.classList.contains('hidden')) {
+            closeSearchModal();
+        } else {
+            openSearchModal();
+        }
+    } 
+    // Open on slash '/' when not typing in an input
+    else if (e.key === '/' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+        e.preventDefault();
+        openSearchModal();
+    }
+    // Close on ESC
+    else if (e.key === 'Escape') {
+        if (searchModal && !searchModal.classList.contains('hidden')) {
+            closeSearchModal();
+        }
+    }
+});
+
+// Expose openSearchModal globally
+window.openSearchModal = openSearchModal;
+window.closeSearchModal = closeSearchModal;
