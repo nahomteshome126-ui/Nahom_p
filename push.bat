@@ -1,4 +1,5 @@
 @echo off
+cd /d "%~dp0"
 echo ===================================================
 echo   Pushing Smart Portfolio Upgrades to GitHub
 echo ===================================================
